@@ -16,7 +16,10 @@ public:
 	FColor GetBackgroundColor()const;
 
 	virtual void OnPaint(FCanvas* Canvas);
+protected:
+	/*FCanvas* StartPannel();
 
+	void EndPannel(FCanvas);*/
 private:
 	std::vector<FWidget*> mChilds;
 	FColor BackgroundColor;

@@ -26,6 +26,7 @@
 #include "Render/Canvas.h"
 
 #include "Widget/Widget.h"
+#include "Widget/Text.h"
 #include "Widget/Pannel.h"
 
 #include "Widget/Label.h"

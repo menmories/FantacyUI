@@ -43,4 +43,7 @@ void FPannel::OnPaint(FCanvas* Canvas)
 			1.0,
 			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR);
 	}
-	BitmapCanvas.RenderTarget->EndDraw();}
+	BitmapCanvas.RenderTarget->EndDraw();
+}
+
+

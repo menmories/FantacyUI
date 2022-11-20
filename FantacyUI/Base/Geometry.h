@@ -35,6 +35,14 @@ public:
 	{
 	}
 
+	FRect(TType InWidth, TType InHeight)
+		: Left(0)
+		, Top(0)
+		, Right(InWidth)
+		, Bottom(InHeight)
+	{
+	}
+
 	FRect(TType InLeft, TType InTop, TType InWidth, TType InHeight)
 		: Left(InLeft)
 		, Top(InTop)
