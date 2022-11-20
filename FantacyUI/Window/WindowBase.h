@@ -2,7 +2,7 @@
 #ifndef __FANTACY_WINDOWBASE_H__
 #define __FANTACY_WINDOWBASE_H__
 
-
+#include "Base/String.h"
 
 
 class FANTACY_API IWindow
@@ -11,6 +11,8 @@ public:
 	virtual ~IWindow() {}
 
 	virtual u64 GetWindowId()const = 0;
+
+	virtual void SetText(const FString& Text) = 0;
 
 	virtual void SetPos(s32 X, s32 Y) = 0;
 
@@ -42,6 +44,8 @@ public:
 	void CenterScreen();
 
 	virtual u64 GetWindowId()const;
+
+	virtual void SetText(const FString& Text);
 
 	virtual void SetPos(s32 X, s32 Y);
 

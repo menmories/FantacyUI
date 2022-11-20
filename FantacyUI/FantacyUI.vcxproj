@@ -115,7 +115,7 @@
       <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>F:\VSProject\cpp\FantacyUI\FantacyUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FantacyUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,7 +135,8 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <AdditionalIncludeDirectories>F:\VSProject\cpp\FantacyUI\FantacyUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FantacyUI;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +164,7 @@
     <ClInclude Include="Widget\Button.h" />
     <ClInclude Include="Widget\Label.h" />
     <ClInclude Include="Widget\Pannel.h" />
+    <ClInclude Include="Widget\Text.h" />
     <ClInclude Include="Widget\UIBuilder.h" />
     <ClInclude Include="Widget\Widget.h" />
     <ClInclude Include="Widget\WindowAttacher.h" />
@@ -189,6 +191,7 @@
     <ClCompile Include="Widget\Button.cpp" />
     <ClCompile Include="Widget\Label.cpp" />
     <ClCompile Include="Widget\Pannel.cpp" />
+    <ClCompile Include="Widget\Text.cpp" />
     <ClCompile Include="Widget\UIBuilder.cpp" />
     <ClCompile Include="Widget\Widget.cpp" />
     <ClCompile Include="Widget\WindowAttacher.cpp" />

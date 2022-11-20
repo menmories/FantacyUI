@@ -5,16 +5,28 @@
 #include "Base/String.h"
 #include "Render/Font.h"
 #include "Base/Color.h"
-#include "Label.h"
+#include "Text.h"
+#include "Pannel.h"
 
 class FCanvas;
-class FANTACY_API FButton : public FLabel
+class FANTACY_API FButton : public FText, public FPannel
 {
 public:
 	FButton();
 
+	FColor GetBorderColor()const;
+
 	virtual void OnPaint(FCanvas* Canvas);
 
+	virtual void OnMouseButtonDown(u32 MouseButton);
+
+	virtual void OnMouseButtonUp(u32 MouseButton);
+
+	virtual void OnMouseEnter();
+
+	virtual void OnMouseLeave();
+
+	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
 private:
 	FColor mBorderColor;
 };

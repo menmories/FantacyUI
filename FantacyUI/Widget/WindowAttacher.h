@@ -16,10 +16,18 @@ public:
 
 	void OnPaint(FCanvas* Canvas);
 
+	void OnMouseMove(const FPoint& MousePoint);
+
+	virtual void OnMouseButtonDown(u32 MouseButton);
+
+	virtual void OnMouseButtonUp(u32 MouseButton);
+
 	bool AttachWindowsMessage(u32 uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
-	std::vector<FWidget*> WidgetRenderQueue;
+	FWidget* FocusWidget;
+	FWidget* MouseEnterWidget;
+	std::vector<FWidget*> WidgetQueue;
 };
 
 #endif // !__FANTACY_WINDOWATTACHER_H__

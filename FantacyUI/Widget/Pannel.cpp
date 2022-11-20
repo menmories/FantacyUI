@@ -43,4 +43,25 @@ void FPannel::OnPaint(FCanvas* Canvas)
 			1.0,
 			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR);
 	}
-	BitmapCanvas.RenderTarget->EndDraw();}
+	BitmapCanvas.RenderTarget->EndDraw();
+}
+
+FWidget* FPannel::FindPointInWidget(const FPoint& InPoint)
+{
+	if (!FWidget::FindPointInWidget(InPoint))
+	{
+		return nullptr;
+	}
+	FPoint NewPoint;
+	ConvertMousePoint(InPoint, NewPoint);
+	for (auto iter = mChilds.rbegin(); iter != mChilds.rend(); iter++)
+	{
+		if ((*iter)->FindPointInWidget(NewPoint))
+		{
+			return *iter;
+		}
+	}
+	return this;
+}
+
+

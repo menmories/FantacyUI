@@ -1,8 +1,4 @@
-﻿// SimpleTestUI.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-//#include <atlbase.h>
-//#include <atlstr.h>
-#include <string>
+﻿#include <string>
 #include <tchar.h>
 #include <iostream>
 #include <FantacyUI.h>
@@ -24,14 +20,42 @@ public:
         Widget->SetRect(FRectU(200, 200, 128, 128));
         AddWidget(Widget);*/
         FPannel* Pannel = new FPannel();
-        Pannel->SetRect(FRectU(200, 10, 400, 600));
-        Pannel->SetBackgroundColor(FColor(0xff00ffff));
+        Pannel->SetRect(FRectU(200, 10, 460, 600));
+        Pannel->SetBackgroundColor(FColor(0x999999ff));
         AddWidget(Pannel);
 
-        FLabel* Label = new FLabel();
+        /*FLabel* Label = new FLabel();
         Label->SetText(TEXT("你好呀"));
         Label->SetRect(FRectU(10, 10, 128, 128));
-        Pannel->AddChild(Label);
+        Pannel->AddChild(Label);*/
+
+        /*FButton* TestButton = new FButton();
+        TestButton->SetRect(FRectU(10, 10, 80, 28));
+        TestButton->SetText(TEXT("我是按钮"));
+        Pannel->AddChild(TestButton);
+
+        TestButton = new FButton();
+        TestButton->SetRect(FRectU(10, 50, 80, 28));
+        TestButton->SetText(TEXT("我是按钮"));
+        Pannel->AddChild(TestButton);*/
+
+        u32 YPos = 10;
+        u32 XPos = 10;
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                FButton* TestButton = new FButton();
+                TestButton->SetRect(FRectU(XPos, YPos, 80, 28));
+                TestButton->SetText(TEXT("我是按钮"));
+                Pannel->AddChild(TestButton);
+                YPos += 35;
+            }
+
+            XPos += 90;
+            YPos = 10;
+        }
+        SetText(TEXT("这是D2D窗口"));
     }
 };
 

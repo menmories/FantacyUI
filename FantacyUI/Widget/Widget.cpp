@@ -64,3 +64,54 @@ void FWidget::OnPaint(FCanvas* Canvas)
 	//mSolidColorBrush->Release();
 	//mSolidColorBrush = nullptr;
 }
+
+void FWidget::SetMouseEnter(bool InEnter)
+{
+	this->bMouseEnter = InEnter;
+}
+
+bool FWidget::GetMouseEnter() const
+{
+	return this->bMouseEnter;
+}
+
+void FWidget::SetFocus(bool InFocus)
+{
+	this->bFocus = InFocus;
+}
+
+bool FWidget::GetFocus() const
+{
+	return this->bFocus;
+}
+
+void FWidget::OnMouseButtonDown(u32 MouseButton)
+{
+}
+
+void FWidget::OnMouseButtonUp(u32 MouseButton)
+{
+}
+
+void FWidget::OnMouseEnter()
+{
+}
+
+void FWidget::OnMouseLeave()
+{
+}
+
+FWidget* FWidget::FindPointInWidget(const FPoint& InPoint)
+{
+	if (mRect.PtInRect(InPoint.X, InPoint.Y))
+	{
+		return this;
+	}
+	return nullptr;
+}
+
+void FWidget::ConvertMousePoint(const FPoint& MousePoint, FPoint& OutPoint)
+{
+	OutPoint.X = MousePoint.X - mRect.Left;
+	OutPoint.Y = MousePoint.Y - mRect.Top;
+}

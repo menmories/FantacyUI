@@ -35,6 +35,14 @@ public:
 	{
 	}
 
+	FRect(TType InWidth, TType InHeight)
+		: Left(0)
+		, Top(0)
+		, Right(InWidth)
+		, Bottom(InHeight)
+	{
+	}
+
 	FRect(TType InLeft, TType InTop, TType InWidth, TType InHeight)
 		: Left(InLeft)
 		, Top(InTop)
@@ -42,6 +50,18 @@ public:
 		, Bottom(InTop + InHeight)
 	{
 
+	}
+
+	bool PtInRect(TType AxisX, TType AxisY)const
+	{
+		if ((AxisX >= Left) && (AxisX <= Right))
+		{
+			if ((AxisY >= Top) && (AxisY <= Bottom))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	TType GetWidth()const

@@ -17,6 +17,11 @@ public:
 
 	virtual void OnPaint(FCanvas* Canvas);
 
+	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
+protected:
+	/*FCanvas* StartPannel();
+
+	void EndPannel(FCanvas);*/
 private:
 	std::vector<FWidget*> mChilds;
 	FColor BackgroundColor;

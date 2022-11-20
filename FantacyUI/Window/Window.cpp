@@ -30,6 +30,7 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 	{
 		FPoint MousePoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		mWindowAttacher->OnMouseMove(MousePoint);
 		OnMouseMove(MousePoint);
 		break;
 	}
@@ -48,7 +49,11 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		OnResize(WindowSize.Width, WindowSize.Height);
 		break;
 	}
-	case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
+	case WM_LBUTTONDOWN:
+	{
+		mWindowAttacher->OnMouseButtonDown(VK_LBUTTON);
+		break;
+	}case WM_LBUTTONDBLCLK:
 	case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
 	case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
 	case WM_XBUTTONDOWN: case WM_XBUTTONDBLCLK:
@@ -56,6 +61,10 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	case WM_LBUTTONUP:
+	{
+		mWindowAttacher->OnMouseButtonUp(VK_LBUTTON);
+		break;
+	}
 	case WM_RBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_XBUTTONUP:

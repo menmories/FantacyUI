@@ -30,6 +30,11 @@ u64 FWindowBase::GetWindowId() const
 	return mWindowId;
 }
 
+void FWindowBase::SetText(const FString& Text)
+{
+	::SetWindowText((HWND)GetWindowId(), Text.c_str());
+}
+
 void FWindowBase::SetPos(s32 X, s32 Y)
 {
 	::SetWindowPos((HWND)mWindowId, HWND_TOP, X, Y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER);

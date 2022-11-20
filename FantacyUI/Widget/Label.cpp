@@ -5,33 +5,17 @@
 #include "Render/Font.h"
 FLabel::FLabel()
 {
-	mTextFont = FFontManager::Get()->GetFont(DEFAULT_FONT_ID); //FFontManager::Get()->CreateNewFont(TEXT("Î¢ÈíÑÅºÚ"), 14.0f);
 }
 
 FLabel::~FLabel()
 {
 }
 
-void FLabel::SetText(const FString& InText)
-{
-	mText = InText;
-}
-
-
-FString FLabel::GetText() const
-{
-	return mText;
-}
-
-u32 FLabel::GetTextLength() const
-{
-	return mText.length();
-}
-
 void FLabel::OnPaint(FCanvas* Canvas)
 {
 	FRectU rect = GetRect();
-	D2D1_RECT_F textRect = { rect.Left, rect.Top, rect.Right, rect.Bottom };
+	FText::PaintText(rect, Canvas);
+	/*D2D1_RECT_F textRect = {rect.Left, rect.Top, rect.Right, rect.Bottom};
 	ID2D1SolidColorBrush* textBrush = nullptr;
 	textBrush = Canvas->CreateSolidColorBrush(mTextColor);
 	if (!textBrush)
@@ -42,7 +26,7 @@ void FLabel::OnPaint(FCanvas* Canvas)
 		(IDWriteTextFormat*)mTextFont->GetObj(),
 		textRect,
 		textBrush);
-	textBrush->Release();
+	textBrush->Release();*/
 
 	//FBitmapCanvas BitmapCanvas;
 	//Canvas->CreateBitmapCanvas(FSize(mRect.GetWidth(), mRect.GetHeight()), &BitmapCanvas);

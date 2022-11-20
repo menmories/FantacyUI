@@ -105,6 +105,9 @@
     <ClInclude Include="Widget\Button.h">
       <Filter>头文件\Widget</Filter>
     </ClInclude>
+    <ClInclude Include="Widget\Text.h">
+      <Filter>头文件\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -162,7 +165,10 @@
       <Filter>源文件\Widget</Filter>
     </ClCompile>
     <ClCompile Include="Widget\Button.cpp">
-      <Filter>头文件\Widget</Filter>
+      <Filter>源文件\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\Text.cpp">
+      <Filter>源文件\Widget</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
