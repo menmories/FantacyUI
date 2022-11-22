@@ -16,6 +16,8 @@ public:
 	FColor GetBackgroundColor()const;
 
 	virtual void OnPaint(FCanvas* Canvas);
+protected:
+	/*FCanvas* StartPannel();
 
 	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
 protected:

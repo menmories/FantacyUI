@@ -170,5 +170,8 @@
     <ClCompile Include="Widget\Text.cpp">
       <Filter>源文件\Widget</Filter>
     </ClCompile>
+    <ClCompile Include="Widget\Text.cpp">
+      <Filter>头文件\Widget</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
