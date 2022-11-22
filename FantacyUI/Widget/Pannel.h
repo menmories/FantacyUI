@@ -21,10 +21,6 @@ public:
 protected:
 	/*FCanvas* StartPannel();
 
-	
-protected:
-	/*FCanvas* StartPannel();
-
 	void EndPannel(FCanvas);*/
 private:
 	std::vector<FWidget*> mChilds;
