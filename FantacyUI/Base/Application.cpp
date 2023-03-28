@@ -24,13 +24,19 @@ s32 FApplication::Exec()
     MSG msg = { 0 };
     if (s_bRealTimeDispatch)
     {
-        while (true)
+        bool bQuit = false;
+        while (!bQuit)
         {
             if (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
             {
+                if (msg.message == WM_QUIT)
+                {
+                    bQuit = true;
+                }
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }
+            
         }
     }
     else

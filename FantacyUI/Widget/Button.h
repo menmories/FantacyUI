@@ -7,6 +7,7 @@
 #include "Base/Color.h"
 #include "Text.h"
 #include "Pannel.h"
+#include <functional>
 
 class FCanvas;
 class FANTACY_API FButton : public FText, public FPannel
@@ -27,8 +28,15 @@ public:
 	virtual void OnMouseLeave();
 
 	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
+
+public:
+	std::function<bool(void)> OnClicked;
+	std::function<bool(void)> OnLButtonDown;
+	std::function<bool(void)> OnRButtonDown;
+	std::function<bool(void)> OnMButtonDown;
 private:
 	FColor mBorderColor;
+	u32 bMouseEntered;
 };
 
 

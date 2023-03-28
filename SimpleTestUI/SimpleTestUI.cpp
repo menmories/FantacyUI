@@ -2,6 +2,7 @@
 #include <tchar.h>
 #include <iostream>
 #include <FantacyUI.h>
+#include <functional>
 
 class CTestWindow : public FWindow
 {
@@ -9,6 +10,12 @@ public:
     CTestWindow()
     {
         SetupUI();
+    }
+
+    bool OnTestButtonClicked()
+    {
+        printf("Hello\n");
+        return true;
     }
 
     virtual void ConstructUI()
@@ -48,6 +55,7 @@ public:
                 FButton* TestButton = new FButton();
                 TestButton->SetRect(FRectU(XPos, YPos, 80, 28));
                 TestButton->SetText(TEXT("我是按钮"));
+                TestButton->OnClicked = std::bind(&CTestWindow::OnTestButtonClicked, this);
                 Pannel->AddChild(TestButton);
                 YPos += 35;
             }

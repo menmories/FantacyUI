@@ -95,12 +95,16 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		delete mWindowAttacher;
 		delete mCanvas;
 		Destroy();
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_DESTROY:
 	{
 		OnDestroy();
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
+	}
+	case WM_QUIT:
+	{
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_DEVICECHANGE:
 	{

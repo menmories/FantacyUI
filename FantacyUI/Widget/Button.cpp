@@ -7,6 +7,7 @@
 
 FButton::FButton()
 	: mBorderColor(0x00FFFFFF)
+	, bMouseEntered(false)
 {
 	SetTextColor(0x000000ff);
 	SetBackgroundColor(0x00ACFFFF);
@@ -87,17 +88,25 @@ void FButton::OnMouseButtonDown(u32 MouseButton)
 
 void FButton::OnMouseButtonUp(u32 MouseButton)
 {
-	printf("Hello,Œ“ «∞¥≈•\n");
+	if (bMouseEntered)
+	{
+		if (OnClicked)
+		{
+			OnClicked();
+		}
+	}
 }
 
 void FButton::OnMouseEnter()
 {
 	SetBackgroundColor(0x00FFFFFF);
+	bMouseEntered = true;
 }
 
 void FButton::OnMouseLeave()
 {
 	SetBackgroundColor(0x00ACFFFF);
+	bMouseEntered = false;
 }
 
 FWidget* FButton::FindPointInWidget(const FPoint& InPoint)
