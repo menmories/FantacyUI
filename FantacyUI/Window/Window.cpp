@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Render/Canvas.h"
 #include "Widget/WindowAttacher.h"
+
 FWindow::FWindow()
 	: mCanvas(nullptr)
 	, mWindowAttacher(nullptr)
@@ -32,7 +33,20 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		FPoint MousePoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		mWindowAttacher->OnMouseMove(MousePoint);
 		OnMouseMove(MousePoint);
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
+	}
+	case WM_MOUSEHOVER:
+	{
+		FPoint MousePoint(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		mWindowAttacher->OnMouseEnter(MousePoint);
+		OnMouseEnter(MousePoint);
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
+	}
+	case WM_MOUSELEAVE:
+	{
+		mWindowAttacher->OnMouseLeave();
+		OnMouseLeave();
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_CHAR:
 	{
@@ -40,14 +54,14 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			//Add character
 		}
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_SIZE:
 	{
 		FSize WindowSize(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		mCanvas->Resize(WindowSize);
 		OnResize(WindowSize.Width, WindowSize.Height);
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_LBUTTONDOWN:
 	{
@@ -58,12 +72,17 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
 	case WM_XBUTTONDOWN: case WM_XBUTTONDBLCLK:
 	{
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_LBUTTONUP:
 	{
 		mWindowAttacher->OnMouseButtonUp(VK_LBUTTON);
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
+	}
+	case WM_MOUSEWHEEL:
+	{
+		OnMouseWheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_RBUTTONUP:
 	case WM_MBUTTONUP:
@@ -85,13 +104,13 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_DEVICECHANGE:
 	{
-		break;
+		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_CREATE:
 	{
 		mCanvas = new FCanvas();
 		mCanvas->Init(this->GetWindowId());
-		mWindowAttacher = new FWindowAttacher();
+		mWindowAttacher = new FWindowAttacher(this->GetWindowId());
 		ConstructUI();
 		break;
 	}
@@ -113,6 +132,18 @@ void FWindow::OnResize(s32 Width, s32 Height)
 }
 
 void FWindow::OnMouseMove(const FPoint& MousePoint)
+{
+}
+
+void FWindow::OnMouseWheel(short zDelta)
+{
+}
+
+void FWindow::OnMouseEnter(const FPoint& MousePoint)
+{
+}
+
+void FWindow::OnMouseLeave()
 {
 }
 

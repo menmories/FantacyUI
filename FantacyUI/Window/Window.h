@@ -22,6 +22,12 @@ protected:
 
 	virtual void OnMouseMove(const FPoint& MousePoint);
 
+	virtual void OnMouseWheel(short zDelta);
+
+	virtual void OnMouseEnter(const FPoint& MousePoint);
+
+	virtual void OnMouseLeave();
+
 	/*用于销毁各类资源*/
 	virtual void OnDestroy();
 

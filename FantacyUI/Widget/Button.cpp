@@ -82,14 +82,12 @@ void FButton::OnMouseButtonDown(u32 MouseButton)
 	{
 		MessageBoxA(nullptr, "Hello", "caption", MB_OK);
 	}*/
+	//printf("我是按钮\n");
 }
 
 void FButton::OnMouseButtonUp(u32 MouseButton)
 {
-	if (MouseButton == VK_LBUTTON)
-	{
-		MessageBoxA(nullptr, "Hello", "caption", MB_OK);
-	}
+	printf("Hello,我是按钮\n");
 }
 
 void FButton::OnMouseEnter()

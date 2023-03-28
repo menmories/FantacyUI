@@ -110,6 +110,11 @@ FWidget* FWidget::FindPointInWidget(const FPoint& InPoint)
 	return nullptr;
 }
 
+bool FWidget::PtInRegion(const FPoint& InPoint)
+{
+	return mRect.PtInRect(InPoint.X, InPoint.Y);
+}
+
 void FWidget::ConvertMousePoint(const FPoint& MousePoint, FPoint& OutPoint)
 {
 	OutPoint.X = MousePoint.X - mRect.Left;

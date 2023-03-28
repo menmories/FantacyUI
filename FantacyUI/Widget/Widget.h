@@ -37,6 +37,8 @@ public:
 
 	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
 
+	virtual bool PtInRegion(const FPoint& InPoint);
+
 	void ConvertMousePoint(const FPoint& MousePoint, FPoint& OutPoint);
 private:
 	FRectU mRect;
