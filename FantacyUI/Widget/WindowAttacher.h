@@ -6,6 +6,7 @@
 
 #include "Widget.h"
 #include <vector>
+#include "Base/Mouse.h"
 
 class FWindowAttacher
 {
@@ -22,9 +23,9 @@ public:
 
 	void OnMouseLeave();
 
-	virtual void OnMouseButtonDown(u32 MouseButton);
+	virtual void OnMouseButtonDown(const FMouse& Mouse);
 
-	virtual void OnMouseButtonUp(u32 MouseButton);
+	virtual void OnMouseButtonUp(const FMouse& Mouse);
 
 	bool AttachWindowsMessage(u32 uMsg, WPARAM wParam, LPARAM lParam);
 

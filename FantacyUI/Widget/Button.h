@@ -19,9 +19,9 @@ public:
 
 	virtual void OnPaint(FCanvas* Canvas);
 
-	virtual void OnMouseButtonDown(u32 MouseButton);
+	virtual void OnMouseButtonDown(const FMouse& MouseButton);
 
-	virtual void OnMouseButtonUp(u32 MouseButton);
+	virtual void OnMouseButtonUp(const FMouse& MouseButton);
 
 	virtual void OnMouseEnter();
 
@@ -34,9 +34,12 @@ public:
 	std::function<bool(void)> OnLButtonDown;
 	std::function<bool(void)> OnRButtonDown;
 	std::function<bool(void)> OnMButtonDown;
-private:
+protected:
+	FColor mNormalColor;
+	FColor mEnteredColor;
+	FColor mTouchedColor;
 	FColor mBorderColor;
-	u32 bMouseEntered;
+	u32 bPrevTouched : 1;
 };
 
 

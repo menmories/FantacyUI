@@ -5,6 +5,9 @@
 FWidget::FWidget()
 	: mRect(0, 0, 128, 128)
 	, mParent(nullptr)
+	, bVisible(true)
+	, bMouseEnter(false)
+	, bFocus(false)
 {
 }
 
@@ -85,25 +88,37 @@ bool FWidget::GetFocus() const
 	return this->bFocus;
 }
 
-void FWidget::OnMouseButtonDown(u32 MouseButton)
+bool FWidget::IsVisible() const
+{
+	return bVisible;
+}
+
+void FWidget::SetVisible(bool InVisible)
+{
+	bVisible = InVisible;
+}
+
+void FWidget::OnMouseButtonDown(const FMouse& MouseButton)
 {
 }
 
-void FWidget::OnMouseButtonUp(u32 MouseButton)
+void FWidget::OnMouseButtonUp(const FMouse& MouseButton)
 {
 }
 
 void FWidget::OnMouseEnter()
 {
+
 }
 
 void FWidget::OnMouseLeave()
 {
+	
 }
 
 FWidget* FWidget::FindPointInWidget(const FPoint& InPoint)
 {
-	if (mRect.PtInRect(InPoint.X, InPoint.Y))
+	if (PtInRegion(InPoint) && bVisible)
 	{
 		return this;
 	}

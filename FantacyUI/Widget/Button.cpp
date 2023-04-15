@@ -7,7 +7,10 @@
 
 FButton::FButton()
 	: mBorderColor(0x00FFFFFF)
-	, bMouseEntered(false)
+	, mEnteredColor(0x00FFFFFF)
+	, mNormalColor(0x00ACFFFF)
+	, mTouchedColor(0x40E0D0FF)
+	, bPrevTouched(false)
 {
 	SetTextColor(0x000000ff);
 	SetBackgroundColor(0x00ACFFFF);
@@ -77,36 +80,40 @@ void FButton::OnPaint(FCanvas* Canvas)
 	BitmapCanvas.RenderTarget->EndDraw();
 }
 
-void FButton::OnMouseButtonDown(u32 MouseButton)
+void FButton::OnMouseButtonDown(const FMouse& Mouse)
 {
-	/*if (MouseButton == VK_LBUTTON)
+	if (Mouse.MouseButton == VK_LBUTTON)
 	{
-		MessageBoxA(nullptr, "Hello", "caption", MB_OK);
-	}*/
-	//printf("Œ“ «∞¥≈•\n");
+		bPrevTouched = true;
+		SetBackgroundColor(mTouchedColor);
+	}
+	
 }
 
-void FButton::OnMouseButtonUp(u32 MouseButton)
+void FButton::OnMouseButtonUp(const FMouse& Mouse)
 {
-	if (bMouseEntered)
+	if (Mouse.MouseButton == VK_LBUTTON)
 	{
-		if (OnClicked)
+		if (bPrevTouched)
 		{
-			OnClicked();
+			if (OnClicked)
+			{
+				OnClicked();
+			}
 		}
+		bPrevTouched = false;
+		SetBackgroundColor(mEnteredColor);
 	}
 }
 
 void FButton::OnMouseEnter()
 {
-	SetBackgroundColor(0x00FFFFFF);
-	bMouseEntered = true;
+	SetBackgroundColor(mEnteredColor);
 }
 
 void FButton::OnMouseLeave()
 {
-	SetBackgroundColor(0x00ACFFFF);
-	bMouseEntered = false;
+	SetBackgroundColor(mNormalColor);
 }
 
 FWidget* FButton::FindPointInWidget(const FPoint& InPoint)

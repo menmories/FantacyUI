@@ -150,6 +150,7 @@
     <ClInclude Include="Base\Application.h" />
     <ClInclude Include="Base\Color.h" />
     <ClInclude Include="Base\Geometry.h" />
+    <ClInclude Include="Base\Mouse.h" />
     <ClInclude Include="Base\Object.h" />
     <ClInclude Include="Base\String.h" />
     <ClInclude Include="Base\Thread.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Types.h" />
     <ClInclude Include="Widget\Button.h" />
     <ClInclude Include="Widget\Label.h" />
+    <ClInclude Include="Widget\ListBox.h" />
     <ClInclude Include="Widget\Pannel.h" />
     <ClInclude Include="Widget\Text.h" />
     <ClInclude Include="Widget\UIBuilder.h" />
@@ -175,6 +177,7 @@
     <ClCompile Include="Base\Application.cpp" />
     <ClCompile Include="Base\Color.cpp" />
     <ClCompile Include="Base\Geometry.cpp" />
+    <ClCompile Include="Base\Mouse.cpp" />
     <ClCompile Include="Base\Object.cpp" />
     <ClCompile Include="Base\String.cpp" />
     <ClCompile Include="Base\Thread.cpp" />
@@ -190,6 +193,7 @@
     <ClCompile Include="Render\Font.cpp" />
     <ClCompile Include="Widget\Button.cpp" />
     <ClCompile Include="Widget\Label.cpp" />
+    <ClCompile Include="Widget\ListBox.cpp" />
     <ClCompile Include="Widget\Pannel.cpp" />
     <ClCompile Include="Widget\Text.cpp" />
     <ClCompile Include="Widget\UIBuilder.cpp" />

@@ -65,7 +65,11 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_LBUTTONDOWN:
 	{
-		mWindowAttacher->OnMouseButtonDown(VK_LBUTTON);
+		FMouse mouse;
+		mouse.MouseButton = VK_LBUTTON;
+		mouse.X = GET_X_LPARAM(lParam);
+		mouse.Y = GET_Y_LPARAM(lParam);
+		mWindowAttacher->OnMouseButtonDown(mouse);
 		break;
 	}case WM_LBUTTONDBLCLK:
 	case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
@@ -76,7 +80,11 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_LBUTTONUP:
 	{
-		mWindowAttacher->OnMouseButtonUp(VK_LBUTTON);
+		FMouse mouse;
+		mouse.MouseButton = VK_LBUTTON;
+		mouse.X = GET_X_LPARAM(lParam);
+		mouse.Y = GET_Y_LPARAM(lParam);
+		mWindowAttacher->OnMouseButtonUp(mouse);
 		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_MOUSEWHEEL:

@@ -35,16 +35,25 @@ void FWindowAttacher::OnMouseMove(const FPoint& MousePoint)
 	{
 		if (MouseEnterWidget)
 		{
-			MouseEnterWidget->OnMouseLeave();
+			if (MouseEnterWidget != Widget)
+			{
+				MouseEnterWidget->OnMouseLeave();
+				MouseEnterWidget = Widget;
+				MouseEnterWidget->OnMouseEnter();
+			}
 		}
-		MouseEnterWidget = Widget;
-		MouseEnterWidget->OnMouseEnter();
+		else
+		{
+			MouseEnterWidget = Widget;
+			MouseEnterWidget->OnMouseEnter();
+		}
 	}
 	else
 	{
 		if (MouseEnterWidget)
 		{
 			MouseEnterWidget->OnMouseLeave();
+			MouseEnterWidget = nullptr;
 		}
 	}
 }
@@ -56,6 +65,7 @@ void FWindowAttacher::OnMouseEnter(const FPoint& MousePoint)
 	if (MouseEnterWidget)
 	{
 		MouseEnterWidget->OnMouseEnter();
+		MouseEnterWidget->SetMouseEnter(true);
 	}
 }
 
@@ -66,23 +76,31 @@ void FWindowAttacher::OnMouseLeave()
 	if (MouseEnterWidget)
 	{
 		MouseEnterWidget->OnMouseLeave();
+		MouseEnterWidget->SetMouseEnter(false);
 		MouseEnterWidget = nullptr;
 	}
 }
 
-void FWindowAttacher::OnMouseButtonDown(u32 MouseButton)
+void FWindowAttacher::OnMouseButtonDown(const FMouse& Mouse)
 {
 	if (MouseEnterWidget)
 	{
-		MouseEnterWidget->OnMouseButtonDown(MouseButton);
+		MouseEnterWidget->OnMouseButtonDown(Mouse);
 	}
 }
 
-void FWindowAttacher::OnMouseButtonUp(u32 MouseButton)
+void FWindowAttacher::OnMouseButtonUp(const FMouse& Mouse)
 {
 	if (MouseEnterWidget)
 	{
-		MouseEnterWidget->OnMouseButtonUp(MouseButton);
+
+		/*FPoint pt(Mouse.X, Mouse.Y);
+		MouseEnterWidget->ConvertMousePoint(pt, pt);
+		if (MouseEnterWidget->PtInRegion(pt))
+		{
+			
+		}*/
+		MouseEnterWidget->OnMouseButtonUp(Mouse);
 	}
 }
 
@@ -95,6 +113,10 @@ FWidget* FWindowAttacher::FindEnterWidget(const FPoint& MousePoint)
 {
 	for (auto iter = WidgetQueue.rbegin(); iter != WidgetQueue.rend(); iter++)
 	{
+		if (!(*iter)->IsVisible())
+		{
+			continue;
+		}
 		FWidget* Widget = (*iter)->FindPointInWidget(MousePoint);
 		if (Widget)
 		{
@@ -103,7 +125,7 @@ FWidget* FWindowAttacher::FindEnterWidget(const FPoint& MousePoint)
 	}
 	return nullptr;
 }
-//#pragma comment(lib, "user32.lib")
+
 void FWindowAttacher::TrackingMouse()
 {
 	TRACKMOUSEEVENT tme = { 0 };

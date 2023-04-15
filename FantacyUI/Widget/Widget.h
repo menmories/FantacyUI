@@ -2,7 +2,7 @@
 #define __FANTACY_WIDGET_H__
 #include "Types.h"
 #include "Base/Geometry.h"
-
+#include "Base/Mouse.h"
 class FCanvas;
 class FANTACY_API FWidget
 {
@@ -27,9 +27,13 @@ public:
 
 	bool GetFocus()const;
 
-	virtual void OnMouseButtonDown(u32 MouseButton);
+	bool IsVisible()const;
 
-	virtual void OnMouseButtonUp(u32 MouseButton);
+	void SetVisible(bool InVisible);
+
+	virtual void OnMouseButtonDown(const FMouse& MouseButton);
+
+	virtual void OnMouseButtonUp(const FMouse& MouseButton);
 
 	virtual void OnMouseEnter();
 
@@ -40,11 +44,12 @@ public:
 	virtual bool PtInRegion(const FPoint& InPoint);
 
 	void ConvertMousePoint(const FPoint& MousePoint, FPoint& OutPoint);
-private:
+protected:
 	FRectU mRect;
 	FWidget* mParent;
 	u32 bMouseEnter : 1;
 	u32 bFocus : 1;
+	u32 bVisible : 1;		//¿ÉÊÓ/Òþ²Ø
 };
 
 

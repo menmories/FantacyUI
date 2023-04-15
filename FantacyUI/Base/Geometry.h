@@ -93,6 +93,7 @@ public:
 
 typedef FRect<s32> FRectU;
 typedef FRect<float> FRectF;
+typedef FRectU FMargin;
 
 #endif // !__FANTACY_GEOMETRY_H__
 
