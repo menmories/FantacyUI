@@ -6,6 +6,9 @@
 
 #ifdef PLATFORM_WINDOWS
 #define FANTACY_API __declspec(dllexport)
+
+#else
+#define FANTACY_API
 #endif
 
 

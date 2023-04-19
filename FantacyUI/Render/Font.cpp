@@ -75,6 +75,11 @@ FFont* FFontManager::CreateNewFont(const FString& FontFamily, float FontSize)
     return nullptr;
 }
 
+u32 FFontManager::GetFontCount() const
+{
+    return (u32)mFonts.size();
+}
+
 void FFontManager::Destroy()
 {
     delete this;

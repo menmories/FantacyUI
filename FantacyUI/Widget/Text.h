@@ -14,6 +14,12 @@ public:
 
 	~FText();
 
+	//设置文本对齐
+	void SetTextAlignment(const DWRITE_TEXT_ALIGNMENT& alignment);
+
+	//设置段落对齐
+	void SetParagraphAlignment(const DWRITE_PARAGRAPH_ALIGNMENT& alignment);
+
 	virtual void SetText(const FString& InText);
 
 	virtual FString GetText()const;

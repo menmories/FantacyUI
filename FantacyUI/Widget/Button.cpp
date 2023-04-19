@@ -30,10 +30,11 @@ void FButton::OnPaint(FCanvas* Canvas)
 	BitmapCanvas.Clear(GetBackgroundColor());
 	//Paint childs.
 	ID2D1SolidColorBrush* BorderBrush = BitmapCanvas.CreateSolidColorBrush(mBorderColor);
-	if (!BorderBrush)
+	assert(BorderBrush);
+	/*if (!BorderBrush)
 	{
 		return;
-	}
+	}*/
 
 	BitmapCanvas.RenderTarget->DrawRectangle(D2D1::RectF(1,
 		1,
@@ -42,13 +43,12 @@ void FButton::OnPaint(FCanvas* Canvas)
 		BorderBrush);
 
 	ID2D1SolidColorBrush* TextBrush = BitmapCanvas.CreateSolidColorBrush(GetTextColor());
-	if (!TextBrush)
+	assert(TextBrush);
+	/*if (!TextBrush)
 	{
 		BorderBrush->Release();
 		return;
-	}
-	/*D2D1_RECT_F TextRect = { 0.0f, 0.0f,
-		(float)(BaseRect.GetWidth()), (float)(BaseRect.GetHeight()) };*/
+	}*/
 
 	FRectU TextRect(BaseRect.GetWidth(), BaseRect.GetHeight());
 	PaintText(TextRect, &BitmapCanvas);
@@ -64,12 +64,10 @@ void FButton::OnPaint(FCanvas* Canvas)
 		TextRect,
 		TextBrush);*/
 
-	
-	BorderBrush->Release();
-	TextBrush->Release();
 	//End childs paint.
 	ID2D1Bitmap* bitmap = nullptr;
 	((ID2D1BitmapRenderTarget*)BitmapCanvas.RenderTarget)->GetBitmap(&bitmap);
+	assert(bitmap);
 	if (bitmap)
 	{
 		Canvas->RenderTarget->DrawBitmap(bitmap,
@@ -78,6 +76,8 @@ void FButton::OnPaint(FCanvas* Canvas)
 			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR);
 	}
 	BitmapCanvas.RenderTarget->EndDraw();
+	BorderBrush->Release();
+	TextBrush->Release();
 }
 
 void FButton::OnMouseButtonDown(const FMouse& Mouse)

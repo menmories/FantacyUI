@@ -16,10 +16,6 @@ public:
 	~FLabel();
 
 	virtual void OnPaint(FCanvas* Canvas);
-private:
-	FString mText;
-	FFont* mTextFont;
-	FColor mTextColor;
 };
 
 

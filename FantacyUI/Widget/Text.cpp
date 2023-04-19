@@ -6,13 +6,29 @@
 
 FText::FText()
 {
+	//从FontManager获取默认字体
 	mTextFont = FFontManager::Get()->GetFont(DEFAULT_FONT_ID); //FFontManager::Get()->CreateNewFont(TEXT("微软雅黑"), 14.0f);
+	//IDWriteTextFormat* TextFormat = (IDWriteTextFormat*)mTextFont->GetObj();
 	IDWriteTextFormat* TextFormat = (IDWriteTextFormat*)mTextFont->GetObj();
-
+	TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT::DWRITE_TEXT_ALIGNMENT_CENTER);
+	TextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT::DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 }
 
 FText::~FText()
 {
+}
+
+void FText::SetTextAlignment(const DWRITE_TEXT_ALIGNMENT& alignment)
+{
+	IDWriteTextFormat* TextFormat = (IDWriteTextFormat*)mTextFont->GetObj();
+	TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT::DWRITE_TEXT_ALIGNMENT_CENTER);
+	
+}
+
+void FText::SetParagraphAlignment(const DWRITE_PARAGRAPH_ALIGNMENT& alignment)
+{
+	IDWriteTextFormat* TextFormat = (IDWriteTextFormat*)mTextFont->GetObj();
+	TextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT::DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 }
 
 void FText::SetText(const FString& InText)
@@ -28,7 +44,7 @@ FString FText::GetText() const
 
 u32 FText::GetTextLength() const
 {
-	return mText.length();
+	return (u32)mText.length();
 }
 
 FFont* FText::GetTextFont()
@@ -48,17 +64,16 @@ void FText::SetTextColor(const FColor& Color)
 
 void FText::PaintText(const FRectU& Rect, FCanvas* Canvas)
 {
-	D2D1_RECT_F textRect = { Rect.Left, Rect.Top, Rect.Right, Rect.Bottom };
+	D2D1_RECT_F textRect = { (FLOAT)Rect.Left, (FLOAT)Rect.Top, (FLOAT)Rect.Right, (FLOAT)Rect.Bottom };
 	ID2D1SolidColorBrush* textBrush = nullptr;
 	textBrush = Canvas->CreateSolidColorBrush(mTextColor);
-	if (!textBrush)
+	assert(textBrush);
+	/*if (!textBrush)
 	{
 		return;
-	}
-	IDWriteTextFormat* TextFormat = (IDWriteTextFormat*)GetTextFont()->GetObj();
-	TextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT::DWRITE_TEXT_ALIGNMENT_CENTER);
-	TextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT::DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
-	Canvas->RenderTarget->DrawText(mText.c_str(), mText.length(),
+	}*/
+	
+	Canvas->RenderTarget->DrawText(mText.c_str(), (UINT32)mText.length(),
 		(IDWriteTextFormat*)mTextFont->GetObj(),
 		textRect,
 		textBrush);

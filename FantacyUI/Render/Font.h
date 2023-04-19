@@ -29,6 +29,8 @@ public:
 
 	FFont* CreateNewFont(const FString& FontFamily, float FontSize);
 
+	u32 GetFontCount()const;
+
 	void Destroy();
 
 	FFont* GetFont(u32 FontId);
