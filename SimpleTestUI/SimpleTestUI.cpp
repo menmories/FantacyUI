@@ -18,6 +18,12 @@ public:
         return true;
     }
 
+    bool OnJiuMingBtnClicked() 
+    {
+        printf("救命啊\n");
+        return true;
+    }
+
     virtual void ConstructUI()
     {
         FPannel* Pannel = new FPannel();
@@ -29,6 +35,13 @@ public:
         TestButton->SetRect(FRectU(10, 10, 80, 28));
         TestButton->SetText(TEXT("我是按钮"));
         TestButton->OnClicked = std::bind(&CTestWindow::OnTestButtonClicked, this);
+        Pannel->AddChild(TestButton);
+        SetText(TEXT("这是D2D窗口"));
+
+        TestButton = new FButton();
+        TestButton->SetRect(FRectU(10, 70, 80, 28));
+        TestButton->SetText(TEXT("我是按钮"));
+        TestButton->OnClicked = std::bind(&CTestWindow::OnJiuMingBtnClicked, this);
         Pannel->AddChild(TestButton);
         SetText(TEXT("这是D2D窗口"));
 
