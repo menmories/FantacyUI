@@ -7,43 +7,92 @@
 class CTestWindow : public FWindow
 {
 public:
+    FTabPannel* TabPanel;
     CTestWindow()
+        : TabPanel(nullptr)
     {
+        uSelectedIndex = 0;
         SetupUI();
     }
 
-    bool OnTestButtonClicked()
+    bool OnPrevPageButtonClicked()
     {
-        printf("Hello\n");
+        if (uSelectedIndex > 0)
+        {
+            uSelectedIndex--;
+            TabPanel->SelectPage(uSelectedIndex);
+        }
+        else
+        {
+            printf("没有前一页了\n");
+        }
         return true;
     }
 
-    bool OnJiuMingBtnClicked() 
+    bool OnNextPageButtonClicked()
     {
-        printf("救命啊\n");
+        if (uSelectedIndex < (TabPanel->GetPageCount() - 1))
+        {
+            uSelectedIndex++;
+            TabPanel->SelectPage(uSelectedIndex);
+        }
+        else
+        {
+            printf("没有下一页了\n");
+        }
         return true;
     }
+
+    u32 uSelectedIndex;
 
     virtual void ConstructUI()
     {
         FPannel* Pannel = new FPannel();
-        Pannel->SetRect(FRectU(200, 10, 460, 600));
+        Pannel->SetRect(FRectU(0, 0, 460, 600));
         Pannel->SetBackgroundColor(FColor(0x999999ff));
         AddWidget(Pannel);
 
         FButton* TestButton = new FButton();
         TestButton->SetRect(FRectU(10, 10, 80, 28));
-        TestButton->SetText(TEXT("我是按钮"));
-        TestButton->OnClicked = std::bind(&CTestWindow::OnTestButtonClicked, this);
+        TestButton->SetText(TEXT("上一页"));
+        TestButton->OnClicked = std::bind(&CTestWindow::OnPrevPageButtonClicked, this);
         Pannel->AddChild(TestButton);
         SetText(TEXT("这是D2D窗口"));
 
         TestButton = new FButton();
-        TestButton->SetRect(FRectU(10, 70, 80, 28));
-        TestButton->SetText(TEXT("我是按钮"));
-        TestButton->OnClicked = std::bind(&CTestWindow::OnJiuMingBtnClicked, this);
+        TestButton->SetRect(FRectU(100, 10, 80, 28));
+        TestButton->SetText(TEXT("下一页"));
+        TestButton->OnClicked = std::bind(&CTestWindow::OnNextPageButtonClicked, this);
         Pannel->AddChild(TestButton);
         SetText(TEXT("这是D2D窗口"));
+
+        TabPanel = new FTabPannel();
+        TabPanel->SetRect(FRectU(1, 50, 400, 500));
+        FPannel* PagePannel = TabPanel->AddPage();
+        PagePannel->SetBackgroundColor(FColor(0xff, 0x00, 0x00));
+        FButton* PageButton = new FButton();
+        PageButton->SetRect(FRectU(10, 10, 120, 28));
+        PageButton->SetText(TEXT("我是页面一按钮"));
+        PagePannel->AddChild(PageButton);
+
+        PagePannel = TabPanel->AddPage();
+        PagePannel->SetBackgroundColor(FColor(0x00, 0xff, 0x00));
+
+        PageButton = new FButton();
+        PageButton->SetRect(FRectU(10, 10, 120, 28));
+        PageButton->SetText(TEXT("我是页面二按钮"));
+        PagePannel->AddChild(PageButton);
+
+        
+        PagePannel = TabPanel->AddPage();
+        PagePannel->SetBackgroundColor(FColor(0x00, 0x00, 0xff));
+
+        PageButton = new FButton();
+        PageButton->SetRect(FRectU(10, 10, 120, 28));
+        PageButton->SetText(TEXT("我是页面三按钮"));
+        PagePannel->AddChild(PageButton);
+
+        Pannel->AddChild(TabPanel);
 
         ///*FWidget* Widget = new FWidget();
         //AddWidget(Widget);

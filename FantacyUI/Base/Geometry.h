@@ -64,6 +64,16 @@ public:
 		return false;
 	}
 
+	void SetPos(const FPoint& Pos)
+	{
+		TType Width = GetWidth();
+		TType Height = GetHeight();
+		Left = Pos.X;
+		Top = Pos.Y;
+		Right = Left + Width;
+		Bottom = Top + Height;
+	}
+
 	TType GetWidth()const
 	{
 		return Right - Left;
@@ -74,14 +84,20 @@ public:
 		return Bottom - Top;
 	}
 
-	TType SetWidth(TType Width)
+	void SetWidth(TType Width)
 	{
 		this->Right = this->Left + Width;
 	}
 
-	TType SetHeight(TType Height)
+	void SetHeight(TType Height)
 	{
 		this->Bottom = this->Top + Height;
+	}
+
+	void SetSize(const FSize& size)
+	{
+		this->Right = this->Left + size.Width;
+		this->Bottom = this->Top + size.Height;
 	}
 public:
 	TType Left;

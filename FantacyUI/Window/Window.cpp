@@ -61,6 +61,7 @@ LRESULT FWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		FSize WindowSize(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		mCanvas->Resize(WindowSize);
 		OnResize(WindowSize.Width, WindowSize.Height);
+		mWindowAttacher->OnResize(WindowSize);
 		return ::DefWindowProc((HWND)GetWindowId(), uMsg, wParam, lParam);
 	}
 	case WM_LBUTTONDOWN:

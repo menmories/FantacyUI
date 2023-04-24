@@ -166,6 +166,7 @@
     <ClInclude Include="Widget\Label.h" />
     <ClInclude Include="Widget\ListBox.h" />
     <ClInclude Include="Widget\Pannel.h" />
+    <ClInclude Include="Widget\TabPannel.h" />
     <ClInclude Include="Widget\Text.h" />
     <ClInclude Include="Widget\UIBuilder.h" />
     <ClInclude Include="Widget\Widget.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Widget\Label.cpp" />
     <ClCompile Include="Widget\ListBox.cpp" />
     <ClCompile Include="Widget\Pannel.cpp" />
+    <ClCompile Include="Widget\TabPannel.cpp" />
     <ClCompile Include="Widget\Text.cpp" />
     <ClCompile Include="Widget\UIBuilder.cpp" />
     <ClCompile Include="Widget\Widget.cpp" />

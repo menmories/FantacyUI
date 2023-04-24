@@ -17,6 +17,8 @@ public:
 
 	void OnPaint(FCanvas* Canvas);
 
+	void OnResize(const FSize& WindowSize);
+
 	void OnMouseMove(const FPoint& MousePoint);
 
 	void OnMouseEnter(const FPoint& MousePoint);

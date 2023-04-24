@@ -15,6 +15,10 @@ public:
 
 	void SetRect(const FRectU& InRect);
 
+	void SetPos(const FPoint& InPoint);
+
+	void SetSize(const FSize& InSize);
+
 	FRectU GetRect()const;
 
 	virtual void OnPaint(FCanvas* Canvas);
@@ -38,6 +42,13 @@ public:
 	virtual void OnMouseEnter();
 
 	virtual void OnMouseLeave();
+
+	/*@brief 当父组件发生大小改变时,所有子控件将会收到来自父控件被改变后的大小,
+	* 子控件可跟随父控件的大小来进行大小改变(如有需要)
+	* @param InSize 参数一 父控件被改变后的大小
+	* @return void
+	*/
+	virtual void OnResize(const FSize& InSize);
 
 	virtual FWidget* FindPointInWidget(const FPoint& InPoint);
 

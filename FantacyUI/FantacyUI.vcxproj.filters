@@ -114,6 +114,9 @@
     <ClInclude Include="Base\Mouse.h">
       <Filter>头文件\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Widget\TabPannel.h">
+      <Filter>头文件\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Base\Mouse.cpp">
       <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget\TabPannel.cpp">
+      <Filter>源文件\Widget</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

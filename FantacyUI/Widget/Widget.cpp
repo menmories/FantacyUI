@@ -24,6 +24,18 @@ void FWidget::SetParent(FWidget* InParent)
 void FWidget::SetRect(const FRectU& InRect)
 {
 	mRect = InRect;
+	OnResize(FSize(InRect.GetWidth(), InRect.GetHeight()));
+}
+
+void FWidget::SetPos(const FPoint& InPoint)
+{
+	mRect.SetPos(InPoint);
+}
+
+void FWidget::SetSize(const FSize& InSize)
+{
+	mRect.SetSize(InSize);
+	OnResize(InSize);
 }
 
 FRectU FWidget::GetRect() const
@@ -114,6 +126,10 @@ void FWidget::OnMouseEnter()
 void FWidget::OnMouseLeave()
 {
 	
+}
+
+void FWidget::OnResize(const FSize& ParentSize)
+{
 }
 
 FWidget* FWidget::FindPointInWidget(const FPoint& InPoint)

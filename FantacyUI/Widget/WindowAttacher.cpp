@@ -22,6 +22,14 @@ void FWindowAttacher::OnPaint(FCanvas* Canvas)
 	}
 }
 
+void FWindowAttacher::OnResize(const FSize& WindowSize)
+{
+	for (auto iter = WidgetQueue.begin(); iter != WidgetQueue.end(); iter++)
+	{
+		(*iter)->OnResize(WindowSize);
+	}
+}
+
 void FWindowAttacher::OnMouseMove(const FPoint& MousePoint)
 {
 	if (!bMouseTracking)

@@ -28,6 +28,7 @@
 #include "Widget/Widget.h"
 #include "Widget/Text.h"
 #include "Widget/Pannel.h"
+#include "Widget/TabPannel.h"
 
 #include "Widget/Label.h"
 #include "Widget/Button.h"
