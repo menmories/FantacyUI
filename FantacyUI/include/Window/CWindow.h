@@ -23,6 +23,8 @@ public:
 		m_title = title;
 	}
 
+	void setWindowStyle(WindowStyle style);
+
 	void getSize(s32& width, s32& height);
 
 	void resize(s32 width, s32 height);
@@ -64,6 +66,7 @@ private:
 	RECT m_rcWindow;
 	CPainterDevice* m_painterDevice;
 	u8 m_nState = 0;
+	WindowStyle m_windowStyle;
 };
 
 

@@ -37,7 +37,7 @@ void fa_string_append_int(struct fa_string *str, int i);
 
 void fa_string_append_float(struct fa_string *str, float f, int pt);
 
-char *fa_string_cstr(struct fa_string *str);
+wchar_t* fa_string_cstr(struct fa_string *str);
 
 u32 fa_string_len(struct fa_string *str);
 

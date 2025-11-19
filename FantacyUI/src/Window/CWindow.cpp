@@ -13,6 +13,7 @@ CWindow::CWindow()
 	: m_winId(nullptr)
 	, m_rcWindow({200,150,200 + 800,150 + 600})
 	, m_painterDevice(nullptr)
+	, m_windowStyle(WindowStyle::FramelessWindow)
 {
 	// 1. 定义窗口类
 	WNDCLASSEX wcex;
@@ -43,6 +44,29 @@ CWindow::~CWindow()
 	UnregisterClass(WINDOW_CLASSNAME, (HINSTANCE)GetModuleHandleA(nullptr));
 }
 
+u32 ConvertToPlatformStyle(WindowStyle style)
+{
+	u32 realStyle = WS_OVERLAPPEDWINDOW;
+	if (style == WindowStyle::FramelessWindow)
+	{
+		realStyle = WS_OVERLAPPED;
+	}
+	else if (style == WindowStyle::PopWindow)
+	{
+		realStyle = WS_POPUPWINDOW;
+	}
+	return realStyle;
+}
+
+void CWindow::setWindowStyle(WindowStyle style)
+{
+	m_windowStyle = style;
+	if (m_winId)
+	{
+		SetWindowLongPtr(m_winId, GWL_STYLE, ConvertToPlatformStyle(m_windowStyle));
+	}
+}
+
 void CWindow::getSize(s32& width, s32& height)
 {
 	RECT rcWindow;
@@ -62,23 +86,20 @@ void CWindow::resize(s32 width, s32 height)
 		m_rcWindow.right = m_rcWindow.left + width;
 		m_rcWindow.bottom = m_rcWindow.top + height;
 	}
-	AdjustWindowRect(&m_rcWindow, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&m_rcWindow, ConvertToPlatformStyle(m_windowStyle), FALSE);
 }
 
 void CWindow::move(s32 x, s32 y)
 {
+	s32 width = m_rcWindow.right - m_rcWindow.left;
+	s32 height = m_rcWindow.bottom - m_rcWindow.top;
+	m_rcWindow.left = x;
+	m_rcWindow.top = y;
+	m_rcWindow.right = x + width;
+	m_rcWindow.bottom = y + height;
 	if (m_winId)
 	{
 		::SetWindowPos(m_winId, HWND_NOTOPMOST, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
-	}
-	else
-	{
-		s32 width = m_rcWindow.right - m_rcWindow.left;
-		s32 height = m_rcWindow.bottom - m_rcWindow.top;
-		m_rcWindow.left = x;
-		m_rcWindow.top = y;
-		m_rcWindow.right = x + width;
-		m_rcWindow.bottom = y + height;
 	}
 }
 
@@ -94,7 +115,7 @@ void CWindow::show()
 			0,
 			WINDOW_CLASSNAME,           // 窗口类名
 			m_title.c_str(),           // 窗口标题
-			WS_OVERLAPPEDWINDOW,        // 窗口样式
+			ConvertToPlatformStyle(m_windowStyle),        // 窗口样式
 			m_rcWindow.left, m_rcWindow.top, // 位置
 			m_rcWindow.right - m_rcWindow.left, m_rcWindow.bottom - m_rcWindow.top,                   // 大小
 			NULL,                       // 父窗口

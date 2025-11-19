@@ -42,6 +42,15 @@ typedef std::string PaString;
 #define FANTACY_API __declspec(dllimport)
 #endif  // FANTACY_EXPORT
 
+
+enum WindowStyle
+{
+	SimpleWindow,
+	FramelessWindow,
+	PopWindow
+};
+
+
 #endif  // !PLATFORM_WINDOWS
 
 

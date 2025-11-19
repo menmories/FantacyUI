@@ -62,6 +62,11 @@ void fa_string_copy(fa_string* dst, fa_string* src)
 	dst->data[src->length] = L'\0';
 }
 
+wchar_t* fa_string_cstr(fa_string* str)
+{
+	return str->data;
+}
+
 u32 fa_string_len(struct fa_string* str)
 {
 	return str->length;

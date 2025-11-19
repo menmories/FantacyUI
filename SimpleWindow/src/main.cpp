@@ -7,11 +7,11 @@ class MainWindow : public CWindow
 public:
     MainWindow()
     {
-        int width = 1200, height = 720;
+        int width = 1920, height = 1080;
         setTitle("Hello World");
         resize(1200, 720);
         centerScreen();
-        m_pixmap.load_file("F:/Images/image_naxida.png");     
+        m_pixmap.load_file("../../Images/12dd.jpg");     
     }
 
     virtual void paint()
