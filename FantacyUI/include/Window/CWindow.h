@@ -1,0 +1,71 @@
+#ifndef CWINDOW_H
+#define CWINDOW_H
+
+#include "PlatformDef.h"
+#include "Painter/CPainter.h"
+#include "Widgets/CWidget.h"
+
+class CPainter;
+class CPainterDevice;
+class FANTACY_API CWindow
+{
+public:
+	CWindow();
+	~CWindow();
+
+	FANTACY_INLINE WINID winId() const
+	{
+		return m_winId;
+	}
+
+	FANTACY_INLINE void setTitle(const PaString& title)
+	{
+		m_title = title;
+	}
+
+	void getSize(s32& width, s32& height);
+
+	void resize(s32 width, s32 height);
+
+	void move(s32 x, s32 y);
+
+	void show();
+
+	void hide();
+
+	void centerScreen();
+
+	void showMinimized();
+
+	void showMaximized();
+
+	void showNormal();
+
+	bool isMaximized()const;
+
+	bool isMinimized()const;
+
+	__forceinline CPainterDevice* painterDevice(){return m_painterDevice;}
+
+	virtual void paint();
+
+	virtual void onCreate();
+
+	virtual void onDestroy();
+
+	virtual void onResize(s32 width, s32 height) {};
+protected:
+	virtual LRESULT nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+private:
+	static LRESULT CALLBACK __WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+private:
+	WINID m_winId;
+	PaString m_title;
+	RECT m_rcWindow;
+	CPainterDevice* m_painterDevice;
+	u8 m_nState = 0;
+};
+
+
+
+#endif // !CWINDOW_H

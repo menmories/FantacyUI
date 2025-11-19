@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "charconv": "cpp",
+        "xlocnum": "cpp",
+        "xstring": "cpp",
+        "xiosbase": "c",
+        "xlocale": "c",
+        "xutility": "c",
+        "fa_string.h": "c",
+        "initializer_list": "c",
+        "vector": "c"
+    }
+}
