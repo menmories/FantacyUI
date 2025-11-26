@@ -13,6 +13,8 @@ struct fa_string;
 
 struct fa_string *fa_string_new(const char *str, u32 len);
 
+struct fa_string* fa_string_new_from_wchar(const wchar_t* str, u32 len);
+
 struct fa_string *fa_string_new_from_utf8(const char *str);
 
 void fa_string_set(struct fa_string *str, const wchar_t *s, u32 len);

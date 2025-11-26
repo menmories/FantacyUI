@@ -4,7 +4,7 @@
 
 #include "Painter/CPainterDevice.h"
 
-#define WINDOW_CLASSNAME TEXT("MyWindow")
+#define WINDOW_CLASSNAME L"MyWindow"
 
 #define WMS_LBUTTONDOWN		0x01
 #define WMS_EXITSIZEMOVE	0x02
@@ -13,10 +13,10 @@ CWindow::CWindow()
 	: m_winId(nullptr)
 	, m_rcWindow({200,150,200 + 800,150 + 600})
 	, m_painterDevice(nullptr)
-	, m_windowStyle(WindowStyle::FramelessWindow)
+	, m_windowStyle(WindowStyle::SimpleWindow)
 {
 	// 1. 定义窗口类
-	WNDCLASSEX wcex;
+	WNDCLASSEXW wcex;
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -32,7 +32,7 @@ CWindow::CWindow()
 	wcex.hIconSm = nullptr; // LoadIcon(NULL, IDI_APPLICATION); // 小图标
 
 	// 2. 注册窗口类
-	if (!RegisterClassEx(&wcex))
+	if (!RegisterClassExW(&wcex))
 	{
 		//Has error
 		return;
@@ -41,7 +41,7 @@ CWindow::CWindow()
 
 CWindow::~CWindow()
 {
-	UnregisterClass(WINDOW_CLASSNAME, (HINSTANCE)GetModuleHandleA(nullptr));
+	UnregisterClassW(WINDOW_CLASSNAME, (HINSTANCE)GetModuleHandleA(nullptr));
 }
 
 u32 ConvertToPlatformStyle(WindowStyle style)
@@ -111,10 +111,10 @@ void CWindow::show()
 	}
 	else
 	{
-		m_winId = CreateWindowEx(
+		m_winId = CreateWindowExW(
 			0,
 			WINDOW_CLASSNAME,           // 窗口类名
-			m_title.c_str(),           // 窗口标题
+			m_title.Str(),           // 窗口标题
 			ConvertToPlatformStyle(m_windowStyle),        // 窗口样式
 			m_rcWindow.left, m_rcWindow.top, // 位置
 			m_rcWindow.right - m_rcWindow.left, m_rcWindow.bottom - m_rcWindow.top,                   // 大小

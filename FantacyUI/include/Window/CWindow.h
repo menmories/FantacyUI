@@ -1,9 +1,18 @@
 #ifndef CWINDOW_H
 #define CWINDOW_H
 
+
 #include "PlatformDef.h"
+#include "Core/FaString.h"
 #include "Painter/CPainter.h"
 #include "Widgets/CWidget.h"
+
+enum WindowStyle
+{
+	SimpleWindow,
+	FramelessWindow,
+	PopWindow
+};
 
 class CPainter;
 class CPainterDevice;
@@ -18,7 +27,7 @@ public:
 		return m_winId;
 	}
 
-	FANTACY_INLINE void setTitle(const PaString& title)
+	FANTACY_INLINE void setTitle(const FaString& title)
 	{
 		m_title = title;
 	}
@@ -62,7 +71,7 @@ private:
 	static LRESULT CALLBACK __WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 private:
 	WINID m_winId;
-	PaString m_title;
+	FaString m_title;
 	RECT m_rcWindow;
 	CPainterDevice* m_painterDevice;
 	u8 m_nState = 0;

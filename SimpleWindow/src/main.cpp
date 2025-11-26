@@ -2,6 +2,10 @@
 #include <CApplication.h>
 #include <Window/CWindow.h>
 
+#include "Core/FaString.h"
+#include <locale>
+
+
 class MainWindow : public CWindow
 {
 public:
@@ -30,6 +34,25 @@ private:
 
 int main(int argc, char** argv)
 {
+    setlocale(LC_ALL, "");
+    /*FaString str(L"Hello World!\n");
+    
+    wprintf(L"%s\n", str.Str());
+
+    str = FaString(L"hdsakjsd");
+    wprintf(L"%s\n", str.Str());
+
+    str = FaString("inet_11111111111111111111111111111");
+    wprintf(L"%s\n", str.Str());
+
+    str = "12345";
+    wprintf(L"%s\n", str.Str());
+    str.FromUtf8(u8"你好呀");
+
+    str += "4444";
+
+    wprintf(L"%s\n", str.Str());*/
+
     CApplication app(argc, argv);
     MainWindow window;
     window.show();

@@ -4,7 +4,7 @@
 #include "Painter/CPixmap.h"
 #include "Window/CWindow.h"
 
-class CBrush
+class FANTACY_API CBrush
 {
 public:
 	CBrush()
@@ -30,36 +30,28 @@ public:
     float m_a;
 };
 
-class CFont
+class FANTACY_API CFont
 {
 public:
-    CFont()
-        : m_fontName(L"Arial"), m_fontSize(12)
-    {
+    CFont();
 
-    }
+    CFont(const FaString& fontName, int fontSize);
 
-    CFont(std::wstring fontName, int fontSize)
-        : m_fontName(fontName), m_fontSize(fontSize)
-    {
-
-    }
-
-	FANTACY_INLINE std::wstring name() const
+    FANTACY_INLINE FaString name() const
     {
         return m_fontName;
     }
 
-	FANTACY_INLINE int size() const
+    FANTACY_INLINE int size() const
     {
         return m_fontSize;
     }
 private:
-    std::wstring m_fontName;
+    FaString m_fontName;
     int m_fontSize;
 };
 
-class CPoint
+class FANTACY_API CPoint
 {
 public:
     CPoint()
@@ -108,7 +100,7 @@ private:
     int m_y;
 };
 
-class CSize
+class FANTACY_API CSize
 {
 public:
     CSize::CSize()
@@ -155,7 +147,7 @@ private:
 
 
 
-class CRect
+class FANTACY_API CRect
 {
 public:
 	CRect()
@@ -256,12 +248,13 @@ class CWindow;
 class FANTACY_API CPainter
 {
 public:
+    CPainter();
 	CPainter(CWindow* window);
 	~CPainter();
 
 	void clear(float r, float g, float b);
 
-    CPainter* createCompatiblePainter(int width, int height);
+    static CPainter* fromPixmap(CPixmap* bitmap);
 
 	FANTACY_INLINE void setBrush(const CBrush& brush)
 	{
@@ -278,7 +271,7 @@ public:
 		m_font = font;
 	}
 
-	virtual void drawText(const std::wstring& text, int x, int y);
+	virtual void drawText(const FaString& text, int x, int y);
 
 	void fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY);
 
@@ -291,6 +284,7 @@ private:
 	HDC m_hdc;
 	CFont m_font;
 	CBrush m_brush;
+    HBITMAP m_bitmap;
 };
 
 

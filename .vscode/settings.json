@@ -8,6 +8,11 @@
         "xutility": "c",
         "fa_string.h": "c",
         "initializer_list": "c",
-        "vector": "c"
+        "vector": "c",
+        "algorithm": "cpp",
+        "random": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "utility": "cpp"
     }
 }

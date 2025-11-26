@@ -28,27 +28,12 @@ typedef double f64;
 
 typedef HWND WINID;
 
-#include <string>
-#ifdef _UNICODE
-typedef std::wstring PaString;
-#else
-typedef std::string PaString;
-#endif
-
 #define FANTACY_INLINE __forceinline
 #ifdef  FANTACY_EXPORT
 #define FANTACY_API __declspec(dllexport)
 #else 
 #define FANTACY_API __declspec(dllimport)
 #endif  // FANTACY_EXPORT
-
-
-enum WindowStyle
-{
-	SimpleWindow,
-	FramelessWindow,
-	PopWindow
-};
 
 
 #endif  // !PLATFORM_WINDOWS

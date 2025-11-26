@@ -41,7 +41,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/FantacyUI/include
 )
 
-add_executable(${PROJECT_NAME} WIN32 ${PROJECT_SOURCE} ${PROJECT_HEADERS} ${RCC_FILES})
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCE} ${PROJECT_HEADERS} ${RCC_FILES})
 # 设置入口点为mainCRTStartup
 set_target_properties(${PROJECT_NAME} PROPERTIES
     LINK_FLAGS "/ENTRY:mainCRTStartup"

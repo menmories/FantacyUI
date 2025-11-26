@@ -39,7 +39,6 @@ public:
 		return (HBITMAP)m_data;
 	}
 
-
 private:
 	int m_width;
 	int m_height;

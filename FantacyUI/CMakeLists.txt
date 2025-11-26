@@ -17,6 +17,7 @@ add_definitions(-D _CRT_SECURE_NO_WARNINGS -D FANTACY_EXPORT)
 set(PROJECT_HEADERS
     "include/PlatformDef.h"
     "include/Core/fa_string.h"
+    "include/Core/FaString.h"
     "include/Painter/stb_image.h"
     "include/Painter/CPainterDevice.h"
     "include/Painter/CPainter.h"
@@ -37,6 +38,7 @@ set(PROJECT_HEADERS
 set(PROJECT_SOURCE 
     "src/main.cpp"
     "src/Core/fa_string.cpp"
+    "src/Core/FaString.cpp"
     "src/Painter/CPainterDevice.cpp"
     "src/Painter/CPainter.cpp"
     "src/Painter/CPixmap.cpp"

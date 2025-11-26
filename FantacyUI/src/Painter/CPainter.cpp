@@ -3,6 +3,10 @@
 #include "CApplication.h"
 #include <gdiplus.h>
 
+CPainter::CPainter()
+{
+}
+
 CPainter::CPainter(CWindow* window)
 	: m_hdc(window->painterDevice()->winDC())
 	, m_brush(0.0f, 0.0f, 0.0f, 1.0f)
@@ -85,10 +89,15 @@ void CPainter::clear(float r, float g, float b)
 
 }
 
-CPainter* CPainter::createCompatiblePainter(int width, int height)
+CPainter* CPainter::fromPixmap(CPixmap* bitmap)
 {
-
-	return nullptr;
+	CPainter* painter = new CPainter();
+	HDC hdc = GetDC(nullptr);
+	
+	painter->m_hdc = CreateCompatibleDC(hdc);
+	painter->m_bitmap = CreateCompatibleBitmap(painter->m_hdc, bitmap->width(), bitmap->height());
+	SelectObject(painter->m_hdc, painter->m_bitmap);
+	return painter;
 }
 
 void CPainter::drawLine(int beginX, int beginY, int endX, int endY, float width)
@@ -128,13 +137,13 @@ void CPainter::drawPixmapAlphaBlend(CPixmap& pixmap, s32 x, s32 y, s32 width, s3
 	DeleteDC(hCompatibleDC);
 }
 
-void CPainter::drawText(const std::wstring& text, int x, int y)
+void CPainter::drawText(const FaString& text, int x, int y)
 {
 	Gdiplus::Graphics graphics(m_hdc);
 	//Gdiplus::Font font(m_font.name().c_str(), m_font.size());
-	Gdiplus::Font font(m_font.name().c_str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
 	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b*255)));
-	graphics.DrawString(text.c_str(), (INT)text.length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
+	graphics.DrawString(text.Str(), (INT)text.Length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
 }
 
 void CPainter::fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY)
@@ -208,3 +217,14 @@ void CPainter::drawRect(s32 x, s32 y, s32 width, s32 height, float lineWidth)
 	graphics.DrawRectangle(&pen, x, y, width, height);
 }
 
+CFont::CFont()
+	: m_fontName(L"Arial"), m_fontSize(12)
+{
+
+}
+
+CFont::CFont(const FaString& fontName, int fontSize)
+	: m_fontName(fontName), m_fontSize(fontSize)
+{
+
+}

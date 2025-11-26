@@ -1,6 +1,6 @@
 
 #include "Core/fa_string.h"
-#include <string.h>
+#include <string>
 
 struct fa_string
 {
@@ -19,6 +19,12 @@ struct fa_string* fa_string_new(const char* str, u32 len)
 	self->length = length;
 	self->data[length] = L'\0';
 	return self;
+}
+
+fa_string* fa_string_new_from_wchar(const wchar_t* str, u32 len)
+{
+	struct fa_string* self = (struct fa_string*)malloc(sizeof(struct fa_string));
+	return nullptr;
 }
 
 struct fa_string* fa_string_new_from_utf8(const char* str)
