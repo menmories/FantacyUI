@@ -221,6 +221,14 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		onResize(LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		if (!PostThreadMessageA(GetCurrentThreadId(), (WM_USER + 1000), 0, 0))
+		{
+			printf("PostThreadMessageA(GetCurrentThreadId(), 100, 0, 0) failed!\n");
+		}
+		break;
+	}
 	/*case WM_SYSCOMMAND:
 	{
 		u32 uCommandType = (wParam & 0xFFF0);

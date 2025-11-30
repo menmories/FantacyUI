@@ -152,6 +152,8 @@ void CPainter::fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX,
 	graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 	// 创建路径用于绘制圆角矩形
 	Gdiplus::GraphicsPath path;
+	radiusX *= 2;
+	radiusY *= 2;
 
 	// 左上角圆弧
 	path.AddArc(x, y, radiusX, radiusY, 180, 90);

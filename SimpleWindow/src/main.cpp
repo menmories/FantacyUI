@@ -11,11 +11,11 @@ class MainWindow : public CWindow
 public:
     MainWindow()
     {
+        m_pixmap.load_file("../../Images/12dd.jpg");
         int width = 1920, height = 1080;
         setTitle("Hello World");
-        resize(1200, 720);
+        resize(m_pixmap.width() / 1.5f, m_pixmap.height() / 1.5f);
         centerScreen();
-        m_pixmap.load_file("../../Images/12dd.jpg");     
     }
 
     virtual void paint()
@@ -25,6 +25,7 @@ public:
         CPainter painter(this);
         painter.clear(0.01f, 0.7f, 1.0f);
         painter.drawPixmap(m_pixmap, 0, 0, width, height);
+        painter.fillRoundedRect(700, 200, 420, 320, 20, 20);
     }
 
 

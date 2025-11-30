@@ -11,7 +11,8 @@ enum WindowStyle
 {
 	SimpleWindow,
 	FramelessWindow,
-	PopWindow
+	PopWindow,
+	TransparentWindow,
 };
 
 class CPainter;

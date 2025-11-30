@@ -1,7 +1,10 @@
 #include "CApplication.h"
 #include <Gdiplus.h>
 #include <Windows.h>
-#include <windowsx.h> 
+#include <windowsx.h>
+#include <cstdio>
+
+#define COSTOM_MSG (WM_USER+20000)
 
 Gdiplus::GdiplusStartupInput gdiplusStartupInput = 0;
 ULONG_PTR m_gdiplusToken = 0;
@@ -22,6 +25,16 @@ CApplication::CApplication(int argc, char** argv)
 CApplication::~CApplication()
 {
     Gdiplus::GdiplusShutdown(m_gdiplusToken);
+}
+
+int CApplication::sendEvent(CEvent* e)
+{
+    return 0;
+}
+
+int CApplication::postEvent(CEvent* e)
+{
+    return 0;
 }
 
 void CApplication::quit(s32 code)
@@ -52,6 +65,11 @@ int CApplication::run()
     MSG msg = { 0 };
     while (GetMessage(&msg, nullptr, 0, 0))
     {
+        if (!msg.hwnd && msg.message == COSTOM_MSG)
+        {
+            printf("received a no window event.\n");
+            continue;
+        }
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
