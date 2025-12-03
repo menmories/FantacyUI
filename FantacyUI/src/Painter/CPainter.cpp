@@ -146,6 +146,11 @@ void CPainter::drawText(const FaString& text, int x, int y)
 	graphics.DrawString(text.Str(), (INT)text.Length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
 }
 
+void CPainter::fillRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY)
+{
+	fillRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(), radiusX, radiusY);
+}
+
 void CPainter::fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY)
 {
 	Gdiplus::Graphics graphics(m_hdc);
@@ -179,6 +184,11 @@ void CPainter::fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX,
 		graphics.DrawPath(pen, &path);*/
 }
 
+void CPainter::drawRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY, float lineWidth)
+{
+	drawRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(), radiusX, radiusY, lineWidth);
+}
+
 void CPainter::drawRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY, float lineWidth)
 {
 	Gdiplus::Graphics graphics(m_hdc);
@@ -201,6 +211,11 @@ void CPainter::drawRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX,
 	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
 	Gdiplus::Pen pen(&brush, lineWidth);
 	graphics.DrawPath(&pen, &path);
+}
+
+void CPainter::fillRect(const CRect& rect)
+{
+	fillRect(rect.x(), rect.y(), rect.width(), rect.height());
 }
 
 void CPainter::fillRect(s32 x, s32 y, s32 width, s32 height)

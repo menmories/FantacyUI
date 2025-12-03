@@ -1,5 +1,6 @@
 #include "Window/CWindow.h"
 #include <Windows.h>
+#include <cstdio>
 #include "CApplication.h"
 
 #include "Painter/CPainterDevice.h"
@@ -14,6 +15,7 @@ CWindow::CWindow()
 	, m_rcWindow({200,150,200 + 800,150 + 600})
 	, m_painterDevice(nullptr)
 	, m_windowStyle(WindowStyle::SimpleWindow)
+	, m_rootWidget(nullptr)
 {
 	// 1. 定义窗口类
 	WNDCLASSEXW wcex;
@@ -195,6 +197,29 @@ void CWindow::onDestroy()
 	CApplication::quit();
 }
 
+void CWindow::onResize(s32 width, s32 height)
+{
+	m_rootWidget->resize(width, height);
+}
+
+void CWindow::setRoot(CWidget* widget)
+{
+	m_rootWidget = widget;
+	m_rootWidget->setOwner(this);
+	m_rootWidget->resize(m_rcWindow.right - m_rcWindow.left, m_rcWindow.bottom - m_rcWindow.top);
+}
+
+void CWindow::update()
+{
+	InvalidateRect(winId(), &m_rcWindow, FALSE);
+}
+
+void CWindow::update(const CRect& rect)
+{
+	RECT reUpdate = { rect.x(), rect.y(), rect.right(), rect.bottom() };
+	InvalidateRect(winId(), &reUpdate, FALSE);
+}
+
 LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -211,6 +236,10 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		m_painterDevice = new CPainterDevice(this);
 		onCreate();
+		if (!m_rootWidget)
+		{
+			m_rootWidget = new CWidget();
+		}
 		break;
 	}
 	case WM_SIZE:
@@ -220,6 +249,10 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		m_rcWindow.bottom = m_rcWindow.top + HIWORD(lParam);
 		onResize(LOWORD(lParam), HIWORD(lParam));
 		break;
+	}
+	case WM_NCHITTEST:
+	{
+		return ::DefWindowProc(winId(), uMsg, wParam, lParam);
 	}
 	case WM_LBUTTONDOWN:
 	{
@@ -267,6 +300,8 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			m_painterDevice->beginPaint();
 			paint();
+			CPainter painter(this);
+			m_rootWidget->onPaint(&painter);
 			m_painterDevice->endPaint();
 		}
 		

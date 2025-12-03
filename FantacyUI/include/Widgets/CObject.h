@@ -2,32 +2,29 @@
 #define COBJECT_H
 
 #include "PlatformDef.h"
-#include <vector>
 
-class CObject
+class FANTACY_API CObject
 {
 public:
 	CObject(CObject* parent = nullptr);
 	virtual ~CObject();
 
-	FANTACY_INLINE void setParent(CObject* parent)
-	{
-		m_parent = parent;
-		m_parent->addChild(this);
-	}
+	virtual void setParent(CObject* parent);
 
 	FANTACY_INLINE CObject* parent()
 	{
         return m_parent;
 	}
 
-	FANTACY_INLINE void addChild(CObject* child)
-	{
-		m_children.push_back(child);
-	}
+	
+
+	
+protected:
+	void addChild(CObject* child);
+	void removeChild(CObject* child);
 private:
 	CObject* m_parent;
-	std::vector<CObject*> m_children;
+	void* m_children;
 };
 
 #endif // !

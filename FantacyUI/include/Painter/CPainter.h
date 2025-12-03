@@ -13,6 +13,14 @@ public:
 
 	}
 
+    CBrush(u32 color)
+    {
+        m_r = ((color >> 16 & 0xff) / 255.0f);
+        m_g = ((color >> 8 & 0xff) / 255.0f);
+        m_b = ((color & 0xff) / 255.0f);
+        m_a = ((color >> 24 & 0xff) / 255.0f);
+    }
+
 	CBrush(float r, float g, float b)
         : m_r(r), m_g(g), m_b(b), m_a(1.0f)
 	{
@@ -232,6 +240,16 @@ public:
         return *this;
     }
 
+    int bottom() const
+    {
+        return m_x + m_width;
+    }
+
+    int right() const
+    {
+        return m_y + m_height;
+    }
+
     CRect center(const CRect& rect) const
     {
         return CRect(rect.m_x + (rect.m_width - width()) / 2, rect.m_y + (rect.m_height - height()) / 2, width(), height());
@@ -273,10 +291,13 @@ public:
 
 	virtual void drawText(const FaString& text, int x, int y);
 
+    void fillRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY);
 	void fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY);
 
+    void drawRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY, float lineWidth);
 	void drawRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY, float lineWidth);
 
+    void fillRect(const CRect& rect);
 	void fillRect(s32 x, s32 y, s32 width, s32 height);
 
 	void drawRect(s32 x, s32 y, s32 width, s32 height, float lineWidth);

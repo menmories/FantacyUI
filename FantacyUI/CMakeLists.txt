@@ -17,6 +17,7 @@ add_definitions(-D _CRT_SECURE_NO_WARNINGS -D FANTACY_EXPORT)
 set(PROJECT_HEADERS
     "include/PlatformDef.h"
     "include/Core/fa_string.h"
+    "include/Core/FaByteArray.h"
     "include/Core/FaString.h"
     "include/Painter/stb_image.h"
     "include/Painter/CPainterDevice.h"
@@ -27,6 +28,7 @@ set(PROJECT_HEADERS
     "include/Utils/pugixml.hpp"
     "include/Utils/pugiconfig.hpp"
     "include/Utils/CEvent.h"
+    "include/Utils/CInput.h"
     "include/Widgets/CWidget.h"
     "include/Widgets/CLayout.h"
     "include/Widgets/CObject.h"
@@ -38,6 +40,7 @@ set(PROJECT_HEADERS
 set(PROJECT_SOURCE 
     "src/main.cpp"
     "src/Core/fa_string.cpp"
+    "src/Core/FaByteArray.cpp"
     "src/Core/FaString.cpp"
     "src/Painter/CPainterDevice.cpp"
     "src/Painter/CPainter.cpp"
@@ -46,6 +49,7 @@ set(PROJECT_SOURCE
     "src/Painter/CD3D11Bitmap.cpp"
     "src/Utils/pugixml.cpp"
     "src/Utils/CEvent.cpp"
+    "src/Utils/CInput.cpp"
     "src/Widgets/CWidget.cpp"
     "src/Widgets/CLayout.cpp"
     "src/Widgets/CObject.cpp"

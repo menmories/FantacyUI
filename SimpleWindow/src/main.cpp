@@ -16,6 +16,9 @@ public:
         setTitle("Hello World");
         resize(m_pixmap.width() / 1.5f, m_pixmap.height() / 1.5f);
         centerScreen();
+
+        CWidget* rootWidget = new CWidget();
+        setRoot(rootWidget);
     }
 
     virtual void paint()

@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string>
 
+//指定最低DEFAULT_ASSIGN_SIZE block的打小
 #define DEFAULT_ASSIGN_SIZE 16
 
 //根据DEFAULT_ASSIGN_SIZE块大小来计算需要分配的内存大小
@@ -56,9 +57,9 @@ FaString::FaString(const char* src, u32 len)
 
 FaString::~FaString()
 {
-	delete[] m_str;
+	delete[] m_str;   
 }
-
+                                       
 FaString& FaString::operator=(const FaString& other)
 {
 	m_len = other.m_len;

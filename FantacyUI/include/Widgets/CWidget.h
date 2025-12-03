@@ -4,9 +4,10 @@
 #include "CObject.h"
 #include "Painter/CPainter.h"
 #include "Utils/CEvent.h"
+#include "Utils/CInput.h"
 
 class CPainter;
-class CWidget : public CObject
+class FANTACY_API CWidget : public CObject
 {
 public:
 	CWidget(CWidget* parent = nullptr);
@@ -41,20 +42,29 @@ public:
 		m_rect.setHeight(height);
 	}
 
+	FANTACY_INLINE void setOwner(CWindow* window)
+	{
+		m_window = window;
+	}
+
+	void setParent(CWidget* widget);
+	virtual void addWidget(CWidget* widget);
+
 	virtual void onPaint(CPainter* painter);
 	virtual void onResize(const CSize& size);
-	virtual void onMousePress();
-	virtual void onMouseRelease();
-    virtual void onMouseMove();
+	virtual void onMousePress(EMouseButon button);
+	virtual void onMouseRelease(EMouseButon button);
+    virtual void onMouseMove(const CPoint* pos);
 	virtual void onMouseWheel(int direction) {}
 
 	virtual void prePaint(CPainter* painter);
 	virtual void preEvent(const CEvent& e);
 protected:
-
+	
 private:
 	CRect m_rect;
 	CWindow* m_window;
+	void* m_children;
 };
 
 

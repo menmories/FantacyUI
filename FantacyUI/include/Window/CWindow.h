@@ -15,6 +15,8 @@ enum WindowStyle
 	TransparentWindow,
 };
 
+class CRect;
+class CWidget;
 class CPainter;
 class CPainterDevice;
 class FANTACY_API CWindow
@@ -65,7 +67,12 @@ public:
 
 	virtual void onDestroy();
 
-	virtual void onResize(s32 width, s32 height) {};
+	virtual void onResize(s32 width, s32 height);
+
+	void setRoot(CWidget* widget);
+
+	void update();
+	void update(const CRect& rect);
 protected:
 	virtual LRESULT nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 private:
@@ -77,6 +84,7 @@ private:
 	CPainterDevice* m_painterDevice;
 	u8 m_nState = 0;
 	WindowStyle m_windowStyle;
+	CWidget* m_rootWidget;
 };
 
 
