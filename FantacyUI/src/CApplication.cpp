@@ -4,7 +4,7 @@
 #include <windowsx.h>
 #include <cstdio>
 
-#define COSTOM_MSG (WM_USER+20000)
+#define FANTACY_UPDATE_MSG (WM_USER+20000)
 
 Gdiplus::GdiplusStartupInput gdiplusStartupInput = 0;
 ULONG_PTR m_gdiplusToken = 0;
@@ -44,7 +44,7 @@ void CApplication::quit(s32 code)
 
 void CApplication::getFirstScreenSize(s32& width, s32& height)
 {
-    HMONITOR hMonitor = MonitorFromWindow(NULL, MONITOR_DEFAULTTOPRIMARY);
+    HMONITOR hMonitor = MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY);
     MONITORINFO monitorInfo;
     monitorInfo.cbSize = sizeof(MONITORINFO);
     if (GetMonitorInfo(hMonitor, &monitorInfo))
@@ -65,7 +65,7 @@ int CApplication::run()
     MSG msg = { 0 };
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!msg.hwnd && msg.message == COSTOM_MSG)
+        if (!msg.hwnd && msg.message == FANTACY_UPDATE_MSG)
         {
             printf("received a no window event.\n");
             continue;

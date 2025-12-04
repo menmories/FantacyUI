@@ -81,6 +81,8 @@ private:
 	WINID m_winId;
 	FaString m_title;
 	RECT m_rcWindow;
+	RECT m_rcCaption;
+	RECT m_rcSizeBox;
 	CPainterDevice* m_painterDevice;
 	u8 m_nState = 0;
 	WindowStyle m_windowStyle;

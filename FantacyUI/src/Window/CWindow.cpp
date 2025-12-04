@@ -1,5 +1,6 @@
 #include "Window/CWindow.h"
 #include <Windows.h>
+#include <windowsx.h>
 #include <cstdio>
 #include "CApplication.h"
 
@@ -13,6 +14,8 @@
 CWindow::CWindow()
 	: m_winId(nullptr)
 	, m_rcWindow({200,150,200 + 800,150 + 600})
+	, m_rcCaption({ 0, 0, 0, 40 })
+	, m_rcSizeBox({5,5,5,5})
 	, m_painterDevice(nullptr)
 	, m_windowStyle(WindowStyle::SimpleWindow)
 	, m_rootWidget(nullptr)
@@ -51,7 +54,7 @@ u32 ConvertToPlatformStyle(WindowStyle style)
 	u32 realStyle = WS_OVERLAPPEDWINDOW;
 	if (style == WindowStyle::FramelessWindow)
 	{
-		realStyle = WS_OVERLAPPED;
+		realStyle = WS_OVERLAPPEDWINDOW;
 	}
 	else if (style == WindowStyle::PopWindow)
 	{
@@ -185,6 +188,8 @@ bool CWindow::isMinimized() const
 
 void CWindow::paint()
 {
+	CPainter painter(this);
+	m_rootWidget->onPaint(&painter);
 }
 
 void CWindow::onCreate()
@@ -230,7 +235,77 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_NCCALCSIZE:
 	{
-		return DefWindowProc(m_winId, uMsg, wParam, lParam);
+		if (m_windowStyle != WindowStyle::FramelessWindow)
+		{
+			return ::DefWindowProc(winId(), uMsg, wParam, lParam);
+		}
+		LPRECT pRect = NULL;
+		if (wParam == TRUE)
+		{
+			LPNCCALCSIZE_PARAMS pParam = (LPNCCALCSIZE_PARAMS)lParam;
+			pRect = &pParam->rgrc[0];
+		}
+		else
+		{
+			pRect = (LPRECT)lParam;
+		}
+
+		if (isMaximized())
+		{	// 最大化时，计算当前显示器最适合宽高度
+			MONITORINFO oMonitor = {};
+			oMonitor.cbSize = sizeof(oMonitor);
+			::GetMonitorInfo(::MonitorFromWindow(winId(), MONITOR_DEFAULTTONEAREST), &oMonitor);
+			CRect rcWork(oMonitor.rcWork.left, oMonitor.rcWork.top, oMonitor.rcWork.right - oMonitor.rcWork.left, oMonitor.rcWork.bottom - oMonitor.rcWork.top);
+			CRect rcMonitor(oMonitor.rcWork.left, oMonitor.rcMonitor.top, oMonitor.rcMonitor.right - oMonitor.rcMonitor.left, oMonitor.rcMonitor.bottom - oMonitor.rcMonitor.top);
+			
+			rcWork.offset(-oMonitor.rcMonitor.left, -oMonitor.rcMonitor.top);
+
+			pRect->top = pRect->left = 0;
+			pRect->right = pRect->left + rcWork.width();
+			pRect->bottom = pRect->top + rcWork.height();
+			return WVR_REDRAW;
+		}
+
+		return 0;
+		//return DefWindowProc(m_winId, uMsg, wParam, lParam);
+	}
+	case WM_NCHITTEST:
+	{
+		if (m_windowStyle != WindowStyle::FramelessWindow)
+		{
+			return ::DefWindowProc(winId(), uMsg, wParam, lParam);
+		}
+		POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
+		::ScreenToClient(winId(), &pt);
+
+		RECT rcClient;
+		::GetClientRect(winId(), &rcClient);
+
+		if (!isMaximized())
+		{
+			if (pt.y < rcClient.top + m_rcSizeBox.top)
+			{
+				if (pt.x < rcClient.left + m_rcSizeBox.left) return HTTOPLEFT;
+				if (pt.x > rcClient.right - m_rcSizeBox.right) return HTTOPRIGHT;
+				return HTTOP;
+			}
+			else if (pt.y > rcClient.bottom - m_rcSizeBox.bottom)
+			{
+				if (pt.x < rcClient.left + m_rcSizeBox.left) return HTBOTTOMLEFT;
+				if (pt.x > rcClient.right - m_rcSizeBox.right) return HTBOTTOMRIGHT;
+				return HTBOTTOM;
+			}
+
+			if (pt.x < rcClient.left + m_rcSizeBox.left) return HTLEFT;
+			if (pt.x > rcClient.right - m_rcSizeBox.right) return HTRIGHT;
+		}
+
+		if (pt.x >= rcClient.left + m_rcCaption.left && pt.x < rcClient.right - m_rcCaption.right \
+			&& pt.y >= m_rcCaption.top && pt.y < m_rcCaption.bottom) {
+				return HTCAPTION;
+		}
+
+		return HTCLIENT;
 	}
 	case WM_CREATE:
 	{
@@ -249,10 +324,6 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		m_rcWindow.bottom = m_rcWindow.top + HIWORD(lParam);
 		onResize(LOWORD(lParam), HIWORD(lParam));
 		break;
-	}
-	case WM_NCHITTEST:
-	{
-		return ::DefWindowProc(winId(), uMsg, wParam, lParam);
 	}
 	case WM_LBUTTONDOWN:
 	{
@@ -300,8 +371,6 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			m_painterDevice->beginPaint();
 			paint();
-			CPainter painter(this);
-			m_rootWidget->onPaint(&painter);
 			m_painterDevice->endPaint();
 		}
 		

@@ -174,6 +174,12 @@ public:
 	{
 	}
 
+    void offset(int x, int y)
+    {
+        m_x += x;
+        m_y += y;
+    }
+
     FANTACY_INLINE int x() const
     {
         return m_x;

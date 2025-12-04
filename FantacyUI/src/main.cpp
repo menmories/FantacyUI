@@ -17,9 +17,9 @@ class MainWindow : public CWindow
 {
 public:
 	MainWindow::MainWindow()
-		: m_image1(L"F:/Images/ce481325beeb7429095e2ebef1ea5a7a_1034705625688720350.jpg")
+		//: m_image1(L"F:/Images/ce481325beeb7429095e2ebef1ea5a7a_1034705625688720350.jpg")
 	{
-		m_pixmap.load_file("F:/Images/image_naxida.png");
+		m_pixmap.loadFile("F:/Images/image_naxida.png");
 		//m_pixmap.load_file("F:/Images/ce481325beeb7429095e2ebef1ea5a7a_1034705625688720350.jpg");
         //m_pixmap.load_file("F:/Images/psc.jpg");
         //m_pixmap.load_file("F:/Images/girl_flower_dress_876877_1920x1080.jpg");
@@ -148,7 +148,7 @@ public:
 	}
 private:
 	CPixmap m_pixmap;
-	Gdiplus::Image m_image1;
+	//Gdiplus::Image m_image1;
 	//CD3D11Device m_d3d11Device;
 };
 

@@ -1,9 +1,12 @@
 #include "Painter/CPixmap.h"
+#include <gdiplus.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include "Painter/stb_image.h"
+
+////return CreateBitmap(m_width, m_height, 1, 32, m_data);
 
 void rgbaToArgb(u8* rgba, size_t pixelCount) {
     assert(rgba);
@@ -36,9 +39,10 @@ CPixmap::CPixmap()
 
 CPixmap::~CPixmap()
 {
+    destroy();
 }
 
-bool CPixmap::load_file(const char* fileName)
+bool CPixmap::loadFile(const char* fileName)
 {
 	FILE* pFile = fopen(fileName, "rb+");
 	if (!pFile)
@@ -55,6 +59,15 @@ bool CPixmap::load_file(const char* fileName)
 	m_data = CreateBitmap(m_width, m_height, 1, 32, stbi_image);
 	free(stbi_image);
 	return true;
+}
+
+void CPixmap::destroy()
+{
+    if (m_data)
+    {
+        DeleteObject(m_data);
+        m_data = nullptr;
+    }
 }
 
 

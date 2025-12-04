@@ -3,7 +3,7 @@
 
 
 #include "PlatformDef.h"
-#include <gdiplus.h>
+
 
 class FANTACY_API CPixmap
 {
@@ -11,7 +11,9 @@ public:
 	CPixmap();
 	~CPixmap();
 
-	bool load_file(const char* fileName);
+	bool loadFile(const char* fileName);
+
+	void destroy();
 
 	FANTACY_INLINE int width()const
 	{
@@ -35,14 +37,13 @@ public:
 
 	HBITMAP toBitmap()
 	{
-		//return CreateBitmap(m_width, m_height, 1, 32, m_data);
 		return (HBITMAP)m_data;
 	}
 
 private:
 	int m_width;
 	int m_height;
-	void* m_data;
+	void* m_data;		//默认采用ARGB
 	int m_comp;
 };
 

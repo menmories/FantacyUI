@@ -11,11 +11,12 @@ class MainWindow : public CWindow
 public:
     MainWindow()
     {
-        m_pixmap.load_file("../../Images/12dd.jpg");
+        m_pixmap.loadFile("../../Images/12dd.jpg");
         int width = 1920, height = 1080;
         setTitle("Hello World");
-        resize(m_pixmap.width() / 1.5f, m_pixmap.height() / 1.5f);
+        resize((s32)(m_pixmap.width() / 1.5f), (s32)(m_pixmap.height() / 1.5f));
         centerScreen();
+        setWindowStyle(WindowStyle::FramelessWindow);
 
         CWidget* rootWidget = new CWidget();
         setRoot(rootWidget);
