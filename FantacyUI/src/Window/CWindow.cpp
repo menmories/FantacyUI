@@ -189,7 +189,7 @@ bool CWindow::isMinimized() const
 void CWindow::paint()
 {
 	CPainter painter(this);
-	m_rootWidget->onPaint(&painter);
+	m_rootWidget->prePaint(&painter);
 }
 
 void CWindow::onCreate()

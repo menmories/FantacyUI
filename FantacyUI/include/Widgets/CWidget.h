@@ -60,11 +60,11 @@ public:
 	virtual void prePaint(CPainter* painter);
 	virtual void preEvent(const CEvent& e);
 protected:
-	
+private:
+	void paintChild(CPainter* painter);
 private:
 	CRect m_rect;
 	CWindow* m_window;
-	void* m_children;
 };
 
 

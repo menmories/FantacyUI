@@ -19,6 +19,15 @@ FaString::FaString()
 	m_str[0] = 0;
 }
 
+FaString::FaString(const FaString& other)
+	: m_len(other.m_len)
+	, m_capacity(other.m_capacity)
+{
+	m_str = new wchar_t[m_capacity];
+	wmemcpy(m_str, other.m_str, m_len);
+	m_str[m_len] = 0;
+}
+
 FaString::FaString(const wchar_t* src)
 {
 	m_len = (u32)wcslen(src);
@@ -39,20 +48,21 @@ FaString::FaString(const wchar_t* src, u32 len)
 
 FaString::FaString(const char* src)
 {
-	int len = (int)strlen(src);
-	m_len = (u32)MultiByteToWideChar(CP_ACP, 0, src, len, nullptr, 0);
+	//int len = (int)strlen(src);
+	u32 len = (u32)MultiByteToWideChar(CP_ACP, 0, src, -1, nullptr, 0);
+	m_len = len - 1;
 	m_capacity = AssignSize((u32)m_len);
 	m_str = new wchar_t[m_capacity];
-	MultiByteToWideChar(CP_ACP, 0, src, len, m_str, m_len);
-	m_str[m_len] = 0;
+	MultiByteToWideChar(CP_ACP, 0, src, -1, m_str, len);
 }
 
 FaString::FaString(const char* src, u32 len)
 {
-	m_len = (u32)MultiByteToWideChar(CP_ACP, 0, src, (int)len, nullptr, 0);
+	u32 length = (u32)MultiByteToWideChar(CP_ACP, 0, src, (int)len, nullptr, 0);
+	m_len = length - 1;
 	m_capacity = AssignSize((u32)m_len);
 	m_str = new wchar_t[m_capacity];
-	MultiByteToWideChar(CP_ACP, 0, src, (int)len, m_str, m_len);
+	MultiByteToWideChar(CP_ACP, 0, src, (int)len, m_str, len);
 }
 
 FaString::~FaString()
@@ -90,17 +100,17 @@ FaString& FaString::operator=(const wchar_t* other)
 
 FaString& FaString::operator=(const char* other)
 {
-	int length = MultiByteToWideChar(CP_ACP, 0, other, -1, NULL, 0);
-	u32 newCapacity = AssignSize((u32)length);
+	u32 len = (u32)MultiByteToWideChar(CP_ACP, 0, other, -1, NULL, 0);
+	u32 newCapacity = AssignSize((u32)len - 1);
 	if (newCapacity > m_capacity)
 	{
 		m_capacity = newCapacity;
 		delete[] m_str;
 		m_str = new wchar_t[m_capacity];
 	}
-	MultiByteToWideChar(CP_ACP, 0, other, -1, m_str, length);
-	m_len = (u32)length;
-	m_str[m_len - 1] = 0;
+	
+	MultiByteToWideChar(CP_ACP, 0, other, -1, m_str, len);
+	m_len = len - 1;
 	return *this;
 }
 
@@ -175,8 +185,8 @@ bool FaString::operator!=(const FaString& other) const
 
 void FaString::FromUtf8(const char* other)
 {
-	int length = MultiByteToWideChar(CP_UTF8, 0, other, -1, NULL, 0);
-	u32 newCapacity = AssignSize((u32)length);
+	u32 length = (u32)MultiByteToWideChar(CP_UTF8, 0, other, -1, NULL, 0);
+	u32 newCapacity = AssignSize((u32)length - 1);
 	if (newCapacity > m_capacity)
 	{
 		delete[] m_str;
@@ -185,8 +195,7 @@ void FaString::FromUtf8(const char* other)
 	}
 	wmemset(m_str, 0, m_capacity);
 	MultiByteToWideChar(CP_UTF8, 0, other, -1, m_str, length);
-	m_len = (u32)length;
-	m_str[m_len - 1] = 0;
+	m_len = length - 1;
 }
 
 FANTACY_API FaString operator+(const FaString& src1, const FaString& src2)

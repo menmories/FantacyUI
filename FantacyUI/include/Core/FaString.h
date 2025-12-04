@@ -9,6 +9,7 @@ class FANTACY_API FaString
 {
 public:
     FaString();
+    FaString(const FaString& other);
     FaString(const wchar_t* src);
     FaString(const wchar_t* src, u32 len);
     FaString(const char* src);

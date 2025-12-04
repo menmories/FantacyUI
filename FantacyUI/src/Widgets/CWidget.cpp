@@ -1,6 +1,7 @@
 #include "Widgets/CWidget.h"
 #include <vector>
 #include <cassert>
+#include <unordered_set>
 CWidget::CWidget(CWidget* parent)
 	: CObject(parent)
 {
@@ -57,6 +58,7 @@ void CWidget::onMouseMove(const CPoint* pos)
 void CWidget::prePaint(CPainter* painter)
 {
 	onPaint(painter);
+    paintChild(painter);
 }
 
 void CWidget::preEvent(const CEvent& e)
@@ -75,4 +77,14 @@ void CWidget::preEvent(const CEvent& e)
     default:
         break;
     }*/
+}
+
+void CWidget::paintChild(CPainter* painter)
+{
+    std::unordered_set<CObject*>* childs = (std::unordered_set<CObject*>*)children();
+    for (auto iter = childs->begin(); iter != childs->end(); iter++)
+    {
+        CWidget* widget = (CWidget*)*iter;
+        widget->prePaint(painter);
+    }
 }

@@ -108,6 +108,18 @@ void CPainter::drawLine(int beginX, int beginY, int endX, int endY, float width)
     graphics.DrawLine(&pen, beginX, beginY, endX, endY);
 }
 
+void CPainter::drawPixmap(CPixmap& pixmap, const CRect& rect)
+{
+	HDC hCompatibleDC = CreateCompatibleDC(m_hdc);
+	HBITMAP hBitmapSrc = pixmap.toBitmap();
+	HBITMAP hOldBitmap = (HBITMAP)::SelectObject(hCompatibleDC, hBitmapSrc);
+	::SetStretchBltMode(m_hdc, HALFTONE);
+	::StretchBlt(m_hdc, rect.x(), rect.y(), rect.width(), rect.height(), hCompatibleDC, 0, 0, pixmap.width(), pixmap.height(), SRCCOPY);
+
+	::SelectObject(hCompatibleDC, hOldBitmap);
+	::DeleteDC(hCompatibleDC);
+}
+
 void CPainter::drawPixmap(CPixmap& pixmap, s32 x, s32 y, s32 width, s32 height)
 {
 	HDC hCompatibleDC = CreateCompatibleDC(m_hdc);
@@ -144,6 +156,31 @@ void CPainter::drawText(const FaString& text, int x, int y)
 	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
 	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b*255)));
 	graphics.DrawString(text.Str(), (INT)text.Length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
+}
+
+void CPainter::drawText(const FaString& text, const CRect& rect)
+{
+	Gdiplus::Graphics graphics(m_hdc);
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
+	Gdiplus::RectF rcLayout((Gdiplus::REAL)rect.x(), (Gdiplus::REAL)rect.y(), (Gdiplus::REAL)rect.width(), (Gdiplus::REAL)rect.height());
+	Gdiplus::StringFormat sf = new Gdiplus::StringFormat();
+	sf.SetAlignment(Gdiplus::StringAlignmentCenter);
+	sf.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+	graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &brush);
+
+}
+
+void CPainter::drawText(const FaString& text, const CRect& rect, const CBrush& brush)
+{
+	Gdiplus::Graphics graphics(m_hdc);
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+	Gdiplus::SolidBrush gdiBrush(Gdiplus::Color((BYTE)(brush.m_r * 255), (BYTE)(brush.m_g * 255), (BYTE)(brush.m_b * 255)));
+	Gdiplus::RectF rcLayout((Gdiplus::REAL)rect.x(), (Gdiplus::REAL)rect.y(), (Gdiplus::REAL)rect.width(), (Gdiplus::REAL)rect.height());
+	Gdiplus::StringFormat sf = new Gdiplus::StringFormat();
+	sf.SetAlignment(Gdiplus::StringAlignmentCenter);
+	sf.SetLineAlignment(Gdiplus::StringAlignmentCenter);
+	graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &gdiBrush);
 }
 
 void CPainter::fillRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY)

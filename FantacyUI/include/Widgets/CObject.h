@@ -16,9 +16,10 @@ public:
         return m_parent;
 	}
 
-	
-
-	
+	FANTACY_INLINE void* children()
+	{
+		return m_children;
+	}
 protected:
 	void addChild(CObject* child);
 	void removeChild(CObject* child);

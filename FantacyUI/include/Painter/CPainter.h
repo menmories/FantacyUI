@@ -286,8 +286,10 @@ public:
 	}
 	virtual void drawLine(int beginX, int beginY, int endX, int endY, float width);
 
-	virtual void drawPixmap(CPixmap& pixmap, s32 x, s32 y, s32 width, s32 height);
 
+    virtual void drawPixmap(CPixmap& pixmap, const CRect& rect);
+	virtual void drawPixmap(CPixmap& pixmap, s32 x, s32 y, s32 width, s32 height);
+    
 	virtual void drawPixmapAlphaBlend(CPixmap& pixmap, s32 x, s32 y, s32 width, s32 height, u8 alpha);
 
 	FANTACY_INLINE void setFont(const CFont& font)
@@ -296,6 +298,8 @@ public:
 	}
 
 	virtual void drawText(const FaString& text, int x, int y);
+    virtual void drawText(const FaString& text, const CRect& rect);
+    virtual void drawText(const FaString& text, const CRect& rect, const CBrush& brush);
 
     void fillRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY);
 	void fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX, s32 radiusY);

@@ -5,6 +5,8 @@
 #include "Core/FaString.h"
 #include <locale>
 
+#include <Widgets/CText.h>
+#include <Widgets/CImageRect.h>
 
 class MainWindow : public CWindow
 {
@@ -20,16 +22,27 @@ public:
 
         CWidget* rootWidget = new CWidget();
         setRoot(rootWidget);
+
+        CImageRect* imageRect = new CImageRect(rootWidget);
+        imageRect->resize((s32)(m_pixmap.width() / 2.0f), (s32)(m_pixmap.height() / 2.0f));
+        imageRect->setImage("../../Images/12dd.jpg");
+
+        CText* text1 = new CText("Hello", rootWidget);
+        //text1->setTextColor
+        text1->move(30, 30);
+        text1->resize(100, 30);
+        
     }
 
     virtual void paint()
     {
-        int width = 1200, height = 720;
+        CWindow::paint();
+        /*int width = 1200, height = 720;
         getSize(width, height);
         CPainter painter(this);
         painter.clear(0.01f, 0.7f, 1.0f);
         painter.drawPixmap(m_pixmap, 0, 0, width, height);
-        painter.fillRoundedRect(700, 200, 420, 320, 20, 20);
+        painter.fillRoundedRect(700, 200, 420, 320, 20, 20);*/
     }
 
 

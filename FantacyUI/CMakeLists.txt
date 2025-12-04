@@ -32,6 +32,8 @@ set(PROJECT_HEADERS
     "include/Widgets/CWidget.h"
     "include/Widgets/CLayout.h"
     "include/Widgets/CObject.h"
+    "include/Widgets/CText.h"
+    "include/Widgets/CImageRect.h"
 
     "include/Window/CWindow.h"
     "include/CApplication.h"
@@ -53,6 +55,9 @@ set(PROJECT_SOURCE
     "src/Widgets/CWidget.cpp"
     "src/Widgets/CLayout.cpp"
     "src/Widgets/CObject.cpp"
+    "src/Widgets/CText.cpp"
+    "src/Widgets/CImageRect.cpp"
+
     "src/Window/CWindow.cpp"
     "src/CApplication.cpp"
 )
