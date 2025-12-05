@@ -52,14 +52,20 @@ public:
 
 	virtual void onPaint(CPainter* painter);
 	virtual void onResize(const CSize& size);
-	virtual void onMousePress(EMouseButon button);
-	virtual void onMouseRelease(EMouseButon button);
-    virtual void onMouseMove(const CPoint* pos);
+	virtual void onMousePress(CMouseEvent* e);
+	virtual void onMouseRelease(CMouseEvent* e);
+    virtual void onMouseMove(CMouseEvent* e);
 	virtual void onMouseWheel(int direction) {}
 
+
+	//预处理
 	virtual void prePaint(CPainter* painter);
 	virtual void preEvent(const CEvent& e);
+	void preMousePress(CMouseEvent* e);
+	void preMouseRelease(CMouseEvent* e);
+
 protected:
+	virtual CWidget* findChildByPos(const CPoint& pos);
 private:
 	void paintChild(CPainter* painter);
 private:

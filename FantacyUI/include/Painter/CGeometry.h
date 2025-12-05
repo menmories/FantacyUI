@@ -1,7 +1,7 @@
 #ifndef __CGEOMETRY_H__
 #define __CGEOMETRY_H__
 
-
+#include "PlatformDef.h"
 
 class FANTACY_API CPoint
 {
@@ -117,6 +117,9 @@ public:
     ~CRect()
     {
     }
+
+    bool ptInRect(int x, int y);
+    bool ptInRect(const CPoint& pt);
 
     void offset(int x, int y)
     {

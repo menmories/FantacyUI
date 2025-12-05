@@ -205,6 +205,7 @@ void CWindow::onDestroy()
 void CWindow::onResize(s32 width, s32 height)
 {
 	m_rootWidget->resize(width, height);
+	m_rootWidget->onResize(CSize(width, height));
 }
 
 void CWindow::setRoot(CWidget* widget)
@@ -325,14 +326,7 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		onResize(LOWORD(lParam), HIWORD(lParam));
 		break;
 	}
-	case WM_LBUTTONDOWN:
-	{
-		if (!PostThreadMessageA(GetCurrentThreadId(), (WM_USER + 1000), 0, 0))
-		{
-			printf("PostThreadMessageA(GetCurrentThreadId(), 100, 0, 0) failed!\n");
-		}
-		break;
-	}
+	
 	/*case WM_SYSCOMMAND:
 	{
 		u32 uCommandType = (wParam & 0xFFF0);
@@ -410,6 +404,109 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		//printf("WM_MOUSEWHELL\n");
 		return DefWindowProc(winId(), uMsg, wParam, lParam);
+	}
+	case WM_MOUSEMOVE:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_None, EMouseButton::MouseButton_None, globalPos, pos);
+		m_rootWidget->onMouseMove(&e);
+		return DefWindowProc(winId(), uMsg, wParam, lParam);
+	}
+	case WM_LBUTTONDOWN:
+	{
+		/*if (!PostThreadMessageA(GetCurrentThreadId(), (WM_USER + 1000), 0, 0))
+		{
+			printf("PostThreadMessageA(GetCurrentThreadId(), 100, 0, 0) failed!\n");
+		}*/
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Left, EMouseButton::MouseButton_Left, globalPos, pos);
+		m_rootWidget->preMousePress(&e);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Left, EMouseButton::MouseButton_None, globalPos, pos);
+		m_rootWidget->preMouseRelease(&e);
+		break;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Right, EMouseButton::MouseButton_Right, globalPos, pos);
+		m_rootWidget->preMousePress(&e);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Right, EMouseButton::MouseButton_None, globalPos, pos);
+		m_rootWidget->preMouseRelease(&e);
+		break;
+	}
+	case WM_MBUTTONDOWN:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Mid, EMouseButton::MouseButton_Mid, globalPos, pos);
+		m_rootWidget->preMousePress(&e);
+		break;
+		break;
+	}
+	case WM_MBUTTONUP:
+	{
+		CPoint globalPos, pos;
+		POINT pt;
+		GetCursorPos(&pt);
+		globalPos.setX(pt.x);
+		globalPos.setY(pt.y);
+
+		pos.setX(GET_X_LPARAM(lParam));
+		pos.setY(GET_Y_LPARAM(lParam));
+		CMouseEvent e(EMouseButton::MouseButton_Mid, EMouseButton::MouseButton_None, globalPos, pos);
+		m_rootWidget->preMouseRelease(&e);
+		break;
 	}
 	/*case WM_CANCELMODE:
 	{

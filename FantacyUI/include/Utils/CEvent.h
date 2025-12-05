@@ -2,6 +2,8 @@
 #define CEVENT_H
 
 #include "PlatformDef.h"
+#include "Painter/CGeometry.h"
+#include "CInput.h"
 class CEvent
 {
 public:
@@ -44,6 +46,72 @@ public:
 private:
     int     m_type;
     void*   m_data;
+};
+
+
+class FANTACY_API CMouseEvent
+{
+public:
+    CMouseEvent()
+        : m_button(EMouseButton::MouseButton_None)
+        , m_state(EMouseButton::MouseButton_None)
+    {
+
+    }
+
+    CMouseEvent(EMouseButton button, EMouseButton state, const CPoint& globalPos, const CPoint& pos)
+        : m_button(button)
+        , m_state(state)
+        , m_globalPos(globalPos)
+        , m_pos(pos)
+    {
+
+    }
+
+    ~CMouseEvent()
+    {
+
+    }
+
+    FANTACY_INLINE void setButton(EMouseButton button)
+    {
+        m_button = button;
+    }
+
+    FANTACY_INLINE void setGlobalPos(const CPoint& pos)
+    {
+        m_globalPos = pos;
+    }
+
+    FANTACY_INLINE CPoint globalPos()const
+    {
+        return m_pos;
+    }
+
+    FANTACY_INLINE void setPos(const CPoint& pos)
+    {
+        m_pos = pos;
+    }
+
+    FANTACY_INLINE CPoint pos()const
+    {
+        return m_pos;
+    }
+
+    FANTACY_INLINE EMouseButton state()const
+    {
+        return m_state;
+    }
+
+    FANTACY_INLINE void setState(EMouseButton state)
+    {
+        m_state = state;
+    }
+private:
+    EMouseButton m_button;
+    EMouseButton m_state;
+    CPoint m_globalPos;
+    CPoint m_pos;
 };
 
 #endif // !

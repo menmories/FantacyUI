@@ -9,8 +9,9 @@ enum class EInputType
 	InputType_Mouse,
 };
 
-enum class EMouseButon
+enum class EMouseButton
 {
+	MouseButton_None = 0x00000000,
 	MouseButton_Left = 0x00000001,
 	MouseButton_Right = 0x00000002,
 	MouseButton_Mid = 0x00000004,

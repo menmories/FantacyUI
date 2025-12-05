@@ -42,15 +42,17 @@ void CWidget::onResize(const CSize& size)
 
 }
 
-void CWidget::onMousePress(EMouseButon button)
+void CWidget::onMousePress(CMouseEvent* e)
 {
+    printf("CWidget::onMousePress(CMouseEvent* e)");
 }
 
-void CWidget::onMouseRelease(EMouseButon button)
+void CWidget::onMouseRelease(CMouseEvent* e)
 {
+    printf("CWidget::onMouseRelease(CMouseEvent* e)");
 }
 
-void CWidget::onMouseMove(const CPoint* pos)
+void CWidget::onMouseMove(CMouseEvent* e)
 {
 
 }
@@ -77,6 +79,32 @@ void CWidget::preEvent(const CEvent& e)
     default:
         break;
     }*/
+}
+
+void CWidget::preMousePress(CMouseEvent* e)
+{
+    CWidget* widget = findChildByPos(e->pos());
+    widget->onMousePress(e);
+}
+
+void CWidget::preMouseRelease(CMouseEvent* e)
+{
+    CWidget* widget = findChildByPos(e->pos());
+    widget->onMousePress(e);
+}
+
+CWidget* CWidget::findChildByPos(const CPoint& pos)
+{
+    std::unordered_set<CObject*>* childs = (std::unordered_set<CObject*>*)children();
+    for (auto iter = childs->begin(); iter != childs->end(); iter++)
+    {
+        CWidget* widget = (CWidget*)*iter;
+        if (widget->rect().ptInRect(pos))
+        {
+            return widget->findChildByPos(pos);
+        }
+    }
+    return this;
 }
 
 void CWidget::paintChild(CPainter* painter)
