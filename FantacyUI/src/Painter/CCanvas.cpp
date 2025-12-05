@@ -1,8 +1,13 @@
 #include "Painter/CCanvas.h"
-
+#include "Window/CWindow.h"
 #include "Painter/CPainterDevice.h"
 
 CCanvas::CCanvas()
+	: m_hdc(nullptr)
+	, m_hBitmap(nullptr)
+	, m_gdiObj(nullptr)
+	, m_width(0)
+	, m_height(0)
 {
 }
 

@@ -17,6 +17,7 @@ CText::~CText()
 
 void CText::onPaint(CPainter* painter)
 {
+	painter->setFont(m_font);
 	painter->drawText(m_text, rect(), m_textColor);
 }
 

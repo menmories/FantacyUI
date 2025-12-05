@@ -5,18 +5,24 @@
 #include "Window/CWindow.h"
 #include "CGeometry.h"
 #include "CPaintTool.h"
-
+#include "CCanvas.h"
 
 class CWindow;
+class CCanvas;
+
+struct CPainterData
+{
+public:
+	CBrush brush;
+	CFont font;
+};
+
 class FANTACY_API CPainter
 {
 public:
     CPainter();
 	CPainter(CWindow* window);
 	~CPainter();
-
-    void createCompatiblePainter(CPainter* painter, int width, int height);
-    CPixmap deleteCompatiblePainter();
 
 	void clear(float r, float g, float b);
 
@@ -54,6 +60,9 @@ public:
 
 	void drawRect(s32 x, s32 y, s32 width, s32 height, float lineWidth);
 private:
+	CCanvas m_canvas;
+	CPainterData* m_painterData;
+	CPainterData* m_painterDataBuf;
 	HDC m_hdc;
 	CFont m_font;
 	CBrush m_brush;

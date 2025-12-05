@@ -24,13 +24,14 @@ public:
         setRoot(rootWidget);
 
         CImageRect* imageRect = new CImageRect(rootWidget);
+        imageRect->move(200, 10);
         imageRect->resize((s32)(m_pixmap.width() / 2.0f), (s32)(m_pixmap.height() / 2.0f));
         imageRect->setImage("../../Images/12dd.jpg");
 
         CText* text1 = new CText("Hello", rootWidget);
         //text1->setTextColor
         CFont font;
-        font.setFontSize(14);
+        font.setFontSize(24);
         text1->setFont(font);
         text1->setTextColor(CColor(1.0f, 0.0f, 0.0f));
         text1->move(30, 30);

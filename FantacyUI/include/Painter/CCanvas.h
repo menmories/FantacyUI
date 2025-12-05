@@ -3,11 +3,11 @@
 
 
 #include "PlatformDef.h"
-#include "Window/CWindow.h"
 #include "CPixmap.h"
 
 class CWindow;
-class CCanvas
+class CPainter;
+class FANTACY_API CCanvas
 {
 public:
 	CCanvas();
@@ -24,6 +24,16 @@ public:
 	void getBitmap(CPixmap* pixmap)
 	{
 		pixmap->setBitmap(m_hBitmap);
+	}
+
+	FANTACY_INLINE s32 width()const
+	{
+		return m_width;
+	}
+
+	FANTACY_INLINE s32 height()const
+	{
+		return m_height;
 	}
 
 	CCanvas operator=(const CCanvas& other) = delete;
