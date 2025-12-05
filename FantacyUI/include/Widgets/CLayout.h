@@ -10,8 +10,9 @@ public:
 
 
 protected:
-    virtual void onPaint();
+    virtual void onPaint(CPainter* painter);
     
+    virtual void prePaint(CPainter* painter);
 };
 
 

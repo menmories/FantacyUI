@@ -23,15 +23,21 @@ public:
 		m_text = text;
 	}
 
-	FANTACY_INLINE void setTextColor(u32 color)
+	FANTACY_INLINE void setTextColor(const CColor& color)
 	{
-		m_textColor = color;
+		m_textColor.setColor(color);
+	}
+
+	FANTACY_INLINE void setFont(const CFont& font)
+	{
+		m_font = font;
 	}
 
 	virtual void onPaint(CPainter* painter);
 private:
 	FaString m_text;
 	CBrush m_textColor;
+	CFont  m_font;
 };
 
 

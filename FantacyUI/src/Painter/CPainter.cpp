@@ -9,7 +9,7 @@ CPainter::CPainter()
 
 CPainter::CPainter(CWindow* window)
 	: m_hdc(window->painterDevice()->winDC())
-	, m_brush(0.0f, 0.0f, 0.0f, 1.0f)
+	, m_brush(CColor(0.0f, 0.0f, 0.0f, 1.0f))
 {
 }
 
@@ -103,9 +103,14 @@ CPainter* CPainter::fromPixmap(CPixmap* bitmap)
 void CPainter::drawLine(int beginX, int beginY, int endX, int endY, float width)
 {
 	Gdiplus::Graphics graphics(m_hdc);
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
-	Gdiplus::Pen pen(&brush, width);
-    graphics.DrawLine(&pen, beginX, beginY, endX, endY);
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.r() * 255), 
+			(BYTE)(color.g() * 255), (BYTE)(color.b() * 255)));
+		Gdiplus::Pen pen(&brush, width);
+		graphics.DrawLine(&pen, beginX, beginY, endX, endY);
+	}
 }
 
 void CPainter::drawPixmap(CPixmap& pixmap, const CRect& rect)
@@ -153,34 +158,57 @@ void CPainter::drawText(const FaString& text, int x, int y)
 {
 	Gdiplus::Graphics graphics(m_hdc);
 	//Gdiplus::Font font(m_font.name().c_str(), m_font.size());
-	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b*255)));
-	graphics.DrawString(text.Str(), (INT)text.Length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.fontSize(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		graphics.DrawString(text.Str(), (INT)text.Length(), &font, Gdiplus::PointF((Gdiplus::REAL)x, (Gdiplus::REAL)y), &brush);
+	}
+
+	
 }
 
 void CPainter::drawText(const FaString& text, const CRect& rect)
 {
 	Gdiplus::Graphics graphics(m_hdc);
-	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
-	Gdiplus::RectF rcLayout((Gdiplus::REAL)rect.x(), (Gdiplus::REAL)rect.y(), (Gdiplus::REAL)rect.width(), (Gdiplus::REAL)rect.height());
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.fontSize(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
 	Gdiplus::StringFormat sf = new Gdiplus::StringFormat();
 	sf.SetAlignment(Gdiplus::StringAlignmentCenter);
 	sf.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-	graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &brush);
+	Gdiplus::RectF rcLayout((Gdiplus::REAL)rect.x(), (Gdiplus::REAL)rect.y(), (Gdiplus::REAL)rect.width(), (Gdiplus::REAL)rect.height());
 
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &brush);
+	}
 }
 
 void CPainter::drawText(const FaString& text, const CRect& rect, const CBrush& brush)
 {
 	Gdiplus::Graphics graphics(m_hdc);
-	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.size(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
-	Gdiplus::SolidBrush gdiBrush(Gdiplus::Color((BYTE)(brush.m_r * 255), (BYTE)(brush.m_g * 255), (BYTE)(brush.m_b * 255)));
+	Gdiplus::Font font(m_font.name().Str(), (Gdiplus::REAL)m_font.fontSize(), Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
 	Gdiplus::RectF rcLayout((Gdiplus::REAL)rect.x(), (Gdiplus::REAL)rect.y(), (Gdiplus::REAL)rect.width(), (Gdiplus::REAL)rect.height());
 	Gdiplus::StringFormat sf = new Gdiplus::StringFormat();
 	sf.SetAlignment(Gdiplus::StringAlignmentCenter);
 	sf.SetLineAlignment(Gdiplus::StringAlignmentCenter);
-	graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &gdiBrush);
+
+	if (brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = brush.color();
+		Gdiplus::SolidBrush gdiBrush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		graphics.DrawString(text.Str(), (INT)text.Length(), &font, rcLayout, &sf, &gdiBrush);
+	}
+	
 }
 
 void CPainter::fillRoundedRect(const CRect& rect, s32 radiusX, s32 radiusY)
@@ -209,8 +237,15 @@ void CPainter::fillRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX,
 	// 闭合路径
 	path.CloseAllFigures();
 
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
-	graphics.FillPath(&brush, &path);
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		graphics.FillPath(&brush, &path);
+	}
+	
 
 	// 如果提供了画刷，则填充路径
 	//if (brush != NULL)
@@ -245,9 +280,15 @@ void CPainter::drawRoundedRect(s32 x, s32 y, s32 width, s32 height, s32 radiusX,
 	// 闭合路径
 	path.CloseAllFigures();
 
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
-	Gdiplus::Pen pen(&brush, lineWidth);
-	graphics.DrawPath(&pen, &path);
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		Gdiplus::Pen pen(&brush, lineWidth);
+		graphics.DrawPath(&pen, &path);
+	}
 }
 
 void CPainter::fillRect(const CRect& rect)
@@ -258,27 +299,28 @@ void CPainter::fillRect(const CRect& rect)
 void CPainter::fillRect(s32 x, s32 y, s32 width, s32 height)
 {
     Gdiplus::Graphics graphics(m_hdc);
-    Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b*255)));
-    graphics.FillRectangle(&brush, x, y, width, height);
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		graphics.FillRectangle(&brush, x, y, width, height);
+	}
 }
 
 void CPainter::drawRect(s32 x, s32 y, s32 width, s32 height, float lineWidth)
 {
     Gdiplus::Graphics graphics(m_hdc);
 	//graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
-	Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(m_brush.m_r * 255), (BYTE)(m_brush.m_g * 255), (BYTE)(m_brush.m_b * 255)));
-	Gdiplus::Pen pen(&brush, lineWidth);
-	graphics.DrawRectangle(&pen, x, y, width, height);
+	if (m_brush.type() == EBrushType::BrushType_Solid)
+	{
+		CColor color = m_brush.color();
+		Gdiplus::SolidBrush brush(Gdiplus::Color((BYTE)(color.a() * 255), (BYTE)(color.r() * 255),
+			(BYTE)(color.g() * 255),
+			(BYTE)(color.b() * 255)));
+		Gdiplus::Pen pen(&brush, lineWidth);
+		graphics.DrawRectangle(&pen, x, y, width, height);
+	}
 }
 
-CFont::CFont()
-	: m_fontName(L"Arial"), m_fontSize(12)
-{
-
-}
-
-CFont::CFont(const FaString& fontName, int fontSize)
-	: m_fontName(fontName), m_fontSize(fontSize)
-{
-
-}

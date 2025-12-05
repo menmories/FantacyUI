@@ -70,4 +70,10 @@ void CPixmap::destroy()
     }
 }
 
+void CPixmap::setBitmap(void* bitmap)
+{
+    destroy();
+    m_data = bitmap;
+}
+
 

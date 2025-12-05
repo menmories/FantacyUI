@@ -35,6 +35,8 @@ public:
 		return m_data;
 	}
 
+	void setBitmap(void* bitmap);
+
 	HBITMAP toBitmap()
 	{
 		return (HBITMAP)m_data;

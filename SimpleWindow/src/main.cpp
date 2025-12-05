@@ -29,6 +29,10 @@ public:
 
         CText* text1 = new CText("Hello", rootWidget);
         //text1->setTextColor
+        CFont font;
+        font.setFontSize(14);
+        text1->setFont(font);
+        text1->setTextColor(CColor(1.0f, 0.0f, 0.0f));
         text1->move(30, 30);
         text1->resize(100, 30);
         

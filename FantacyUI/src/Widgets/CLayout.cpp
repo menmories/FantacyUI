@@ -9,7 +9,12 @@ CLayout::~CLayout()
 {
 }
 
-void CLayout::onPaint()
+void CLayout::onPaint(CPainter* painter)
+{
+
+}
+
+void CLayout::prePaint(CPainter* painter)
 {
 
 }
