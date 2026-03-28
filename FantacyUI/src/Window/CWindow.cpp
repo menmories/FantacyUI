@@ -10,6 +10,7 @@
 
 #define WMS_LBUTTONDOWN		0x01
 #define WMS_EXITSIZEMOVE	0x02
+#define WMS_WINDOWRESTORED	0x04
 
 CWindow::CWindow()
 	: m_winId(nullptr)
@@ -42,6 +43,10 @@ CWindow::CWindow()
 		//Has error
 		return;
 	}
+
+	memset(&m_minMaxInfo, 0, sizeof(MINMAXINFO));
+	m_minMaxInfo.ptMinTrackSize.x = 200;m_minMaxInfo.ptMinTrackSize.y = 300;
+	m_minMaxInfo.ptMaxTrackSize.x = 65535; m_minMaxInfo.ptMaxTrackSize.y = 65535;
 }
 
 CWindow::~CWindow()
@@ -106,6 +111,18 @@ void CWindow::move(s32 x, s32 y)
 	{
 		::SetWindowPos(m_winId, HWND_NOTOPMOST, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 	}
+}
+
+void CWindow::setMaxSize(s32 width, s32 height)
+{
+	m_minMaxInfo.ptMaxTrackSize.x = width;
+	m_minMaxInfo.ptMaxTrackSize.y = height;
+}
+
+void CWindow::setMinSize(s32 width, s32 height)
+{
+	m_minMaxInfo.ptMinTrackSize.x = width;
+	m_minMaxInfo.ptMinTrackSize.y = height;
 }
 
 void CWindow::show()
@@ -324,6 +341,20 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		m_rcWindow.right = m_rcWindow.left + LOWORD(lParam);
 		m_rcWindow.bottom = m_rcWindow.top + HIWORD(lParam);
 		onResize(LOWORD(lParam), HIWORD(lParam));
+		if (wParam == SIZE_RESTORED)
+		{
+			m_nState |= WMS_WINDOWRESTORED;
+			InvalidateRect(winId(), nullptr, FALSE);
+		}
+		break;
+	}
+	case WM_GETMINMAXINFO:
+	{
+		MINMAXINFO* minMaxInfo = (MINMAXINFO*)lParam;
+		minMaxInfo->ptMaxTrackSize.x = m_minMaxInfo.ptMaxTrackSize.x;
+		minMaxInfo->ptMaxTrackSize.y = m_minMaxInfo.ptMaxTrackSize.y;
+		minMaxInfo->ptMinTrackSize.x = m_minMaxInfo.ptMinTrackSize.x;
+		minMaxInfo->ptMinTrackSize.y = m_minMaxInfo.ptMinTrackSize.y;
 		break;
 	}
 	
@@ -347,7 +378,7 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             ValidateRect(m_winId, nullptr);
 			return FALSE;
 		}*/
-		if (m_nState & WMS_LBUTTONDOWN)
+		if (m_nState & WMS_LBUTTONDOWN && !(m_nState & WMS_WINDOWRESTORED))
 		{
 			/*if (m_nState & WMS_EXITSIZEMOVE)
 			{
@@ -366,8 +397,8 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			m_painterDevice->beginPaint();
 			paint();
 			m_painterDevice->endPaint();
+			m_nState &= ~WMS_WINDOWRESTORED;
 		}
-		
 		break;
 	}
 	case WM_NCLBUTTONDOWN:

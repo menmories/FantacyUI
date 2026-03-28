@@ -43,6 +43,9 @@ public:
 
 	void move(s32 x, s32 y);
 
+	void setMaxSize(s32 width, s32 height);
+	void setMinSize(s32 width, s32 height);
+
 	void show();
 
 	void hide();
@@ -87,6 +90,7 @@ private:
 	u8 m_nState = 0;
 	WindowStyle m_windowStyle;
 	CWidget* m_rootWidget;
+	MINMAXINFO m_minMaxInfo;
 };
 
 
