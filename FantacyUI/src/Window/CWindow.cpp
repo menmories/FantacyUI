@@ -344,7 +344,7 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (wParam == SIZE_RESTORED)
 		{
 			m_nState |= WMS_WINDOWRESTORED;
-			InvalidateRect(winId(), nullptr, FALSE);
+			InvalidateRect(winId(), nullptr, TRUE);
 		}
 		break;
 	}
