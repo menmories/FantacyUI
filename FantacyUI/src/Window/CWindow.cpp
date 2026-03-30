@@ -14,12 +14,13 @@
 
 CWindow::CWindow()
 	: m_winId(nullptr)
-	, m_rcWindow({200,150,200 + 800,150 + 600})
+	, m_rcWindow({ 200,150,200 + 800,150 + 600 })
 	, m_rcCaption({ 0, 0, 0, 40 })
-	, m_rcSizeBox({5,5,5,5})
+	, m_rcSizeBox({ 5,5,5,5 })
 	, m_painterDevice(nullptr)
 	, m_windowStyle(WindowStyle::SimpleWindow)
 	, m_rootWidget(nullptr)
+	, m_bTracking(false)
 {
 	// 1. 定义窗口类
 	WNDCLASSEXW wcex;
@@ -333,6 +334,17 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			m_rootWidget = new CWidget();
 		}
+		if (!m_bTracking)
+		{
+			TRACKMOUSEEVENT tme = { 0 };
+			tme.cbSize = sizeof(TRACKMOUSEEVENT);
+			tme.dwFlags = TME_LEAVE | TME_HOVER;  // 监听离开+悬停
+			tme.hwndTrack = this->winId();
+			tme.dwHoverTime = HOVER_DEFAULT;     // 系统默认悬停时间
+
+			TrackMouseEvent(&tme);
+			m_bTracking = true;
+		}
 		break;
 	}
 	case WM_SIZE:
@@ -346,6 +358,19 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			m_nState |= WMS_WINDOWRESTORED;
 			InvalidateRect(winId(), nullptr, TRUE);
 		}
+		break;
+	}
+	case WM_MOUSEHOVER: 
+	{ 
+		//printf("WM_MOUSEHOVER\n");
+		m_rootWidget->onMouseEnter();
+		break; 
+	}
+	case WM_MOUSELEAVE:
+	{
+		//printf("WM_MOUSELEAVE\n");
+		m_rootWidget->onMouseLeave();
+		m_bTracking = false;
 		break;
 	}
 	case WM_GETMINMAXINFO:
@@ -443,6 +468,18 @@ LRESULT CWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 		GetCursorPos(&pt);
 		globalPos.setX(pt.x);
 		globalPos.setY(pt.y);
+
+		if (!m_bTracking)
+		{
+			TRACKMOUSEEVENT tme = { 0 };
+			tme.cbSize = sizeof(TRACKMOUSEEVENT);
+			tme.dwFlags = TME_LEAVE | TME_HOVER;  // 监听离开+悬停
+			tme.hwndTrack = this->winId();
+			tme.dwHoverTime = 10;     // 系统默认悬停时间
+
+			TrackMouseEvent(&tme);
+			m_bTracking = true;
+		}
 
 		pos.setX(GET_X_LPARAM(lParam));
 		pos.setY(GET_Y_LPARAM(lParam));

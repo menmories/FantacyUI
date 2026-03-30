@@ -37,6 +37,7 @@ set(PROJECT_HEADERS
     "include/Widgets/CObject.h"
     "include/Widgets/CText.h"
     "include/Widgets/CImageRect.h"
+    "include/Widgets/CButton.h"
 
     "include/Window/CWindow.h"
     "include/CApplication.h"
@@ -63,6 +64,7 @@ set(PROJECT_SOURCE
     "src/Widgets/CObject.cpp"
     "src/Widgets/CText.cpp"
     "src/Widgets/CImageRect.cpp"
+    "src/Widgets/CButton.cpp"
 
     "src/Window/CWindow.cpp"
     "src/CApplication.cpp"

@@ -6,14 +6,15 @@
 class FANTACY_API CFaByteArray
 {
 public:
+	CFaByteArray();
 	CFaByteArray(const char* src, int len);
+	const char* data()const;
 private:
 	char m_small[23];
 	union
 	{
 		char* m_data;
 		int m_size;
-		int m_capacity;
 	};
 	bool m_bSmall;
 };

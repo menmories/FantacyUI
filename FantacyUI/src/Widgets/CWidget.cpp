@@ -30,6 +30,11 @@ void CWidget::addWidget(CWidget* widget)
     widget->setParent(this);
 }
 
+void CWidget::update()
+{
+    m_window->update(this->rect());
+}
+
 void CWidget::onPaint(CPainter* painter)
 {
     CBrush brush(0xff2387ff);
@@ -55,6 +60,14 @@ void CWidget::onMouseRelease(CMouseEvent* e)
 void CWidget::onMouseMove(CMouseEvent* e)
 {
 
+}
+
+void CWidget::onMouseEnter()
+{
+}
+
+void CWidget::onMouseLeave()
+{
 }
 
 void CWidget::prePaint(CPainter* painter)

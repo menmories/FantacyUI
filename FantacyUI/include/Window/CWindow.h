@@ -91,6 +91,7 @@ private:
 	WindowStyle m_windowStyle;
 	CWidget* m_rootWidget;
 	MINMAXINFO m_minMaxInfo;
+	bool m_bTracking;
 };
 
 

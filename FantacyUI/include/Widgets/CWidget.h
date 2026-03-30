@@ -47,8 +47,29 @@ public:
 		m_window = window;
 	}
 
+	FANTACY_INLINE bool isEnabled() const
+	{
+		return m_bEnabled;
+	}
+
+	FANTACY_INLINE void setEnabled(bool bEnable)
+	{
+		m_bEnabled = bEnable;
+	}
+
+	FANTACY_INLINE bool isVisible() const
+	{
+		return m_bVisible;
+	}
+
+	FANTACY_INLINE void setVisible(bool bVisible)
+	{
+		m_bVisible = bVisible;
+	}
+
 	void setParent(CWidget* widget);
 	virtual void addWidget(CWidget* widget);
+	void update();
 
 	virtual void onPaint(CPainter* painter);
 	virtual void onResize(const CSize& size);
@@ -56,7 +77,8 @@ public:
 	virtual void onMouseRelease(CMouseEvent* e);
     virtual void onMouseMove(CMouseEvent* e);
 	virtual void onMouseWheel(int direction) {}
-
+	virtual void onMouseEnter();
+	virtual void onMouseLeave();
 
 	//预处理
 	virtual void prePaint(CPainter* painter);
@@ -71,6 +93,8 @@ private:
 private:
 	CRect m_rect;
 	CWindow* m_window;
+	bool m_bVisible;		//可见
+	bool m_bEnabled;		//是否可触发事件
 };
 
 
