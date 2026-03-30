@@ -4,6 +4,8 @@
 #include <unordered_set>
 CWidget::CWidget(CWidget* parent)
 	: CObject(parent)
+    , m_bVisible(true)
+    , m_bEnabled(false)
 {
     if (parent)
     {

@@ -1,8 +1,9 @@
 #include "Widgets/CButton.h"
 
 
-CButton::CButton()
-	: m_normalColor(0xff0098FF)
+CButton::CButton(CWidget* parent)
+	: CText(parent)
+	, m_normalColor(0xff0098FF)
 	, m_hotColor(0xff00AAFF)
 	, m_pushedColor(0xff0078FF)
 	, m_disabledColor(0xffC9C9C9)

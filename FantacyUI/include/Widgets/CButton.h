@@ -15,7 +15,7 @@ enum class EButtonStatus
 class CButton : public CText
 {
 public:
-    CButton();
+    CButton(CWidget* parent = nullptr);
     ~CButton();
 
     void setNormalColor(const CColor& color);
