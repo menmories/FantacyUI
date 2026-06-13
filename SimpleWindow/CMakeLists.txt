@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(SimpleWindow LANGUAGES CXX)
+project(simplewindow)
 #set(PROJECT_NAME kplayer)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -38,7 +38,7 @@ endif(MSVC)
 
 include_directories(
     "include"
-    ${CMAKE_SOURCE_DIR}/FantacyUI/include
+    ${CMAKE_SOURCE_DIR}/xmui/include
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCE} ${PROJECT_HEADERS} ${RCC_FILES})
@@ -48,11 +48,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_link_directories(${PROJECT_NAME} PRIVATE
-
+    debug "${CMAKE_SOURCE_DIR}/thirdparty/tgfx/lib/Debug"
+	optimized "${CMAKE_SOURCE_DIR}/thirdparty/tgfx/lib/Release"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    debug ${CMAKE_SOURCE_DIR}/build/lib/Debug/FantacyUI.lib
-    optimized ${CMAKE_SOURCE_DIR}/build/lib/Release/FantacyUI.lib
+    xmui
 )
 

@@ -1,84 +1,72 @@
 #include <stdio.h>
-#include <CApplication.h>
-#include <Window/CWindow.h>
+#include <XMApplication.h>
+#include <Window/XMWindow.h>
+#include <Core/XMPainter.h>
 
-#include "Core/FaString.h"
-#include <locale>
 
-#include <Widgets/CText.h>
-#include <Widgets/CImageRect.h>
-
-class MainWindow : public CWindow
+class MainWindow : public XMWindow
 {
 public:
-    MainWindow()
-    {
-        m_pixmap.loadFile("../../Images/12dd.jpg");
-        int width = 1920, height = 1080;
-        setTitle("Hello World");
-        resize((s32)(m_pixmap.width() / 1.5f), (s32)(m_pixmap.height() / 1.5f));
-        centerScreen();
-        setWindowStyle(WindowStyle::FramelessWindow);
+	MainWindow()
+	{
+		setTitle("XMUI Test");
+		s32 screenWidth, screenHeight;
+		XMApplication::getScreenSize(screenWidth, screenHeight);
+		resize((s32)(screenWidth * 0.75f), (s32)(screenHeight * 0.7f));
+		//resize(1920, 1080);
+	}
 
-        CWidget* rootWidget = new CWidget();
-        setRoot(rootWidget);
+	~MainWindow()
+	{
+	}
 
-        CImageRect* imageRect = new CImageRect(rootWidget);
-        imageRect->move(200, 10);
-        imageRect->resize((s32)(m_pixmap.width() / 2.0f), (s32)(m_pixmap.height() / 2.0f));
-        imageRect->setImage("../../Images/12dd.jpg");
+	virtual void onCreate() override
+	{
+		XMWindow::onCreate();
+		if (!m_image1.loadFromFile("E:\\GitHub\\FantacyUI\\images\\12dd.jpg"))
+		{
+			fprintf(stderr, "load image failed!\n");
+			return;
+		}
+	}
 
-        CText* text1 = new CText("Hello", rootWidget);
-        //text1->setTextColor
-        CFont font;
-        font.setFontSize(24);
-        text1->setFont(font);
-        text1->setTextColor(CColor(1.0f, 0.0f, 0.0f));
-        text1->move(30, 30);
-        text1->resize(100, 30);
-        
-    }
+	virtual void onPaint(class XMPainter* painter)
+	{
+		s32 width, height;
+		getSize(width, height);
+		painter->drawImage(m_image1, 0, 0, width, height);
 
-    virtual void paint()
-    {
-        CWindow::paint();
-        /*int width = 1200, height = 720;
-        getSize(width, height);
-        CPainter painter(this);
-        painter.clear(0.01f, 0.7f, 1.0f);
-        painter.drawPixmap(m_pixmap, 0, 0, width, height);
-        painter.fillRoundedRect(700, 200, 420, 320, 20, 20);*/
-    }
+		XMFont font("微软雅黑", 14);
+		XMBrush brush(XMColor(255, 0, 0));
+		painter->fillRect(XMRect(30, 30, 130, 130), brush);
 
+		XMString text;
+		text.FromUtf8("你好，我是王大锤");
+		painter->drawText(text, XMRect(30, 600, 230, 650), brush, font);
+
+		XMPen pen;
+		painter->drawRect(XMRect(300, 600, 400, 700), brush, pen);
+
+		//fprintf(stdout, "width=%d,height=%d\n", width, height);
+		//painter->drawImage(m_image1, 0, 0, m_image1.width(), m_image1.height());
+	}
 
 private:
-    CPixmap m_pixmap;
+	XMImage m_image1;
 };
 
 int main(int argc, char** argv)
 {
-    setlocale(LC_ALL, "");
-    /*FaString str(L"Hello World!\n");
-    
-    wprintf(L"%s\n", str.Str());
+	XMApplication app(argc, argv);
+	XMApplication::enableHighDPIScaling();
 
-    str = FaString(L"hdsakjsd");
-    wprintf(L"%s\n", str.Str());
 
-    str = FaString("inet_11111111111111111111111111111");
-    wprintf(L"%s\n", str.Str());
+	MainWindow mainWindow;
+	mainWindow.centerScreen();
+	mainWindow.show();
 
-    str = "12345";
-    wprintf(L"%s\n", str.Str());
-    str.FromUtf8(u8"你好呀");
+	mainWindow.setTitle("fsddfd");
 
-    str += "4444";
-
-    wprintf(L"%s\n", str.Str());*/
-
-    CApplication app(argc, argv);
-    MainWindow window;
-    window.show();
     return app.run();
 }
 
