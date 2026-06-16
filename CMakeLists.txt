@@ -29,7 +29,7 @@ function(vs_file_filter_unremoved files replacedName vsFilterName)
         # message("file_filter=${aFile}")
         # message("file_group_path=${file_group_path}")
         # message("replacedName=${replacedName}")
-        message("${file_group}")
+        # message("${file_group}")
     endforeach()
 endfunction()
 
