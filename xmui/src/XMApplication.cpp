@@ -5,9 +5,17 @@
 #include <cstdio>
 
 #include "Core/XMPaintDevice.h"
+#include "Private/XMDelegateQueue.h"
 
 
-#define FANTACY_UPDATE_MSG (WM_USER+20000)
+
+#define XMUI_WM_UPDATE (WM_USER+20000)
+#define XMUI_MSG_BLOCK		1
+#define XMUI_MSG_UNBLOCK	2
+
+u32 g_uiThreadId = 0;
+
+XMDelegateQueue g_delegate_queue;
 
 XMApplication::XMApplication()
 {
@@ -20,6 +28,7 @@ XMApplication::XMApplication()
 XMApplication::XMApplication(int argc, char** argv)
 	: m_success(false)
 {
+	g_uiThreadId = GetCurrentThreadId();
     if (FAILED(CoInitialize(nullptr)))
     {
         fprintf(stderr, "error:CoInitialize failed!\n");
@@ -38,20 +47,34 @@ XMApplication::~XMApplication()
     CoUninitialize();
 }
 
-int XMApplication::sendEvent(u32 uMsg, void* args)
+void threadEventHandle(int type, void* args)
 {
-	//return PostThreadMessage(GetCurrentThread())
-    return 0;
+	
 }
 
-int XMApplication::postEvent(u32 uMsg, void* args)
+int XMApplication::sendEvent(int type, void* args, XMEventCb cb)
 {
-    return 0;
+	XMDelegateQueueData queueData;
+	queueData.type = type;
+	queueData.args = args;
+	queueData.m_func = cb;
+	g_delegate_queue.addToBegin(queueData);
+	return PostThreadMessage(g_uiThreadId, XMUI_WM_UPDATE, XMUI_MSG_BLOCK, 0);
+}
+
+int XMApplication::postEvent(int type, void* args, XMEventCb cb)
+{
+	XMDelegateQueueData queueData;
+	queueData.type = type;
+	queueData.args = args;
+	queueData.m_func = cb;
+	g_delegate_queue.addFunc(queueData);
+	return PostThreadMessage(g_uiThreadId, XMUI_WM_UPDATE, XMUI_MSG_UNBLOCK, 0);
 }
 
 void XMApplication::enableHighDPIScaling()
 {
-#if _MSC_VER < 1900
+#if _MSC_VER <= 1900
     SetProcessDPIAware();
 #else
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
@@ -91,13 +114,41 @@ int XMApplication::run()
     MSG msg = { 0 };
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!msg.hwnd && msg.message == FANTACY_UPDATE_MSG)
+		/*if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			printf("has message\n");
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		if (g_delegate_queue.hasEvent())
+		{
+			g_delegate_queue.callAndRemoveBlock();
+		}*/
+
+        if (!msg.hwnd && msg.message == XMUI_WM_UPDATE)
         {
-            printf("received a no window event.\n");
+            //printf("received a no window event.\n");
+            while (g_delegate_queue.hasEvent())
+            {
+				switch (msg.wParam)
+				{
+				case XMUI_MSG_BLOCK:
+				{
+					g_delegate_queue.callAndRemoveBlock();
+					break;
+				}
+				case XMUI_MSG_UNBLOCK:
+				{
+					g_delegate_queue.callAndRemove();
+					break;
+				}
+				}
+            }
             continue;
         }
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
     }
     return (int)msg.wParam;
 }

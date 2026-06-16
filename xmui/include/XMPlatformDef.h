@@ -63,4 +63,6 @@ typedef int WINID;
 
 
 
+#define XM_INTERFACE
+
 #endif  // !PLATFORMDEF_H

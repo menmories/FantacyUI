@@ -9,7 +9,7 @@
 #include <d2d1.h>
 #include <string>
 
-#include "backend/direct2d/XMDirect2D.h"
+#include "backend/XMDirect2D.h"
 #include "Core/XMPaintDevice.h"
 
 //

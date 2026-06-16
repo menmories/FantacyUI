@@ -230,6 +230,11 @@ void XMWindow::onMouseMove(const XMPoint& pos)
 	
 }
 
+void XMWindow::onMouseButtonDown(const MouseButton& btn, bool bDown)
+{
+	
+}
+
 void XMWindow::__init()
 {
 	m_painter = XMPaintDevice::newPainter(this);
@@ -379,6 +384,36 @@ LRESULT XMWindow::nativeMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			minMaxInfo->ptMaxTrackSize.y = m_minMaxInfo.ptMaxTrackSize.y;
 			minMaxInfo->ptMinTrackSize.x = m_minMaxInfo.ptMinTrackSize.x;
 			minMaxInfo->ptMinTrackSize.y = m_minMaxInfo.ptMinTrackSize.y;
+			break;
+		}
+	case WM_LBUTTONDOWN:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Left, true);
+			break;
+		}
+	case WM_LBUTTONUP:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Left, false);
+			break;
+		}
+	case WM_RBUTTONDOWN:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Right, true);
+			break;
+		}
+	case WM_RBUTTONUP:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Right, false);
+			break;
+		}
+	case WM_MBUTTONDOWN:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Mid, true);
+			break;
+		}
+	case WM_MBUTTONUP:
+		{
+			onMouseButtonDown(MouseButton::MouseButton_Mid, false);
 			break;
 		}
 

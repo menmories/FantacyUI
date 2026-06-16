@@ -4,6 +4,7 @@
 #include "XMPlatformDef.h"
 #include "XMString.h"
 #include "Core/XMGeometry.h"
+#include "Event/XMEvent.h"
 
 enum WindowStyle
 {
@@ -63,6 +64,8 @@ public:
 	virtual void onResize(s32 width, s32 height);
 
 	virtual void onMouseMove(const XMPoint& pos);
+
+	virtual void onMouseButtonDown(const MouseButton& btn, bool bDown);
 
 	void update();
 protected:

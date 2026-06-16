@@ -1,4 +1,4 @@
-#include "backend/tgfx/XMTgfx.h"
+#include "Backend/XMTgfx.h"
 
 #ifdef XMUI_USE_TGFX_BACKEND
 

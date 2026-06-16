@@ -2,6 +2,8 @@
 #define XMAPPLICATION_H
 
 #include "XMPlatformDef.h"
+#include "Event/XMEvent.h"
+
 
 class XMUI_API XMApplication final
 {
@@ -10,8 +12,8 @@ public:
     XMApplication(int argc, char** argv);
     ~XMApplication();
 
-    static int sendEvent(u32 uMsg, void* args);
-    static int postEvent(u32 uMsg, void* args);
+    static int sendEvent(int type, void* args, XMEventCb cb);
+    static int postEvent(int type, void* args, XMEventCb cb);
 
     static void quit(s32 code = 0);
 

@@ -3,11 +3,13 @@
 #include <Window/XMWindow.h>
 #include <Core/XMPainter.h>
 
+#include <thread>
 
 class MainWindow : public XMWindow
 {
 public:
 	MainWindow()
+		: m_bQuit(false)
 	{
 		setTitle("XMUI Test");
 		s32 screenWidth, screenHeight;
@@ -20,14 +22,30 @@ public:
 	{
 	}
 
+	void threadFunc()
+	{
+		while (!this->m_bQuit)
+		{
+			static int count = 0;
+			XMApplication::sendEvent(1, nullptr, [](int type, void* args)
+			{
+				printf("Hello block event, count=%d\n", count);
+			});
+			Sleep(1000);
+			count++;
+		}
+	}
+
 	virtual void onCreate() override
 	{
-		XMWindow::onCreate();
-		if (!m_image1.loadFromFile("E:\\GitHub\\FantacyUI\\images\\12dd.jpg"))
+		if (!m_image1.loadFromFile("../../images/12dd.jpg"))
 		{
 			fprintf(stderr, "load image failed!\n");
 			return;
 		}
+
+		m_thread_ = std::thread(&MainWindow::threadFunc, this);
+		m_thread_.detach();
 	}
 
 	virtual void onPaint(class XMPainter* painter)
@@ -51,15 +69,34 @@ public:
 		//painter->drawImage(m_image1, 0, 0, m_image1.width(), m_image1.height());
 	}
 
+	virtual void onMouseButtonDown(const MouseButton& btn, bool bDown) override
+	{
+		if (btn == MouseButton::MouseButton_Left)
+		{
+			if (bDown)
+			{
+				XMApplication::sendEvent(1, nullptr, [](int type, void* args)
+				{
+					printf("Hello block event\n");
+				});
+			}
+		}
+	}
+
+	void onDestroy() override
+	{
+		m_bQuit = 1;
+	}
 private:
 	XMImage m_image1;
+	std::thread m_thread_;
+	volatile bool m_bQuit;
 };
 
 int main(int argc, char** argv)
 {
 	XMApplication app(argc, argv);
 	XMApplication::enableHighDPIScaling();
-
 
 	MainWindow mainWindow;
 	mainWindow.centerScreen();

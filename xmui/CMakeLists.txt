@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE HEADER_FILES "include/*.h" "backend/*.h")
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp" "backend/*.cpp")
-file(GLOB_RECURSE BACKEND_SOURCE_FILES "backend/*.cpp")
-file(GLOB_RECURSE BACKEND_HEADER_FILES "backend/*.h")
+file(GLOB_RECURSE BACKEND_SOURCE_FILES "Backend/*.cpp")
+file(GLOB_RECURSE BACKEND_HEADER_FILES "Backend/*.h")
+file(GLOB_RECURSE PRIVATE_HEADER_FILES "Private/*.h")
+file(GLOB_RECURSE PRIVATE_SOURCE_FILES "Private/*.cpp")
 
 set(BACKEND_DIRECT2D 1)
 set(BACKEND_BLEND2D  2)
@@ -18,6 +20,14 @@ if(NOT DEFINED BACKEND_TYPE)
 set(BACKEND_TYPE ${BACKEND_DIRECT2D})
 endif()
 
+set(PROJECT_INCLUDE_DIRECTORIES 
+	"include"
+	${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+set(PROJECT_LINK_DIRECTORIES
+	""
+)
 
 set(PROJECT_LINK_LIBRARIES 
 	"wbemuuid"
@@ -32,6 +42,15 @@ if(BACKEND_TYPE EQUAL BACKEND_DIRECT2D)
 	message("Current backend: Direct2D")
 elseif(BACKEND_TYPE EQUAL BACKEND_BLEND2D)
 	add_definitions(-DXMUI_USE_BLEND2D_BACKEND)
+
+	list(APPEND PROJECT_INCLUDE_DIRECTORIES 
+		"${CMAKE_SOURCE_DIR}/thirdparty/blend2d/include"
+	)
+
+	list(APPEND PROJECT_LINK_DIRECTORIES 
+		debug "${CMAKE_SOURCE_DIR}/thirdparty/blend2d/lib/Debug"
+		optimized "${CMAKE_SOURCE_DIR}/thirdparty/blend2d/lib/Release"
+	)
 	list(APPEND PROJECT_LINK_LIBRARIES "blend2d")
 	message("Current backend: Blend2D")
 endif()
@@ -54,18 +73,21 @@ if(MSVC)
 
 	vs_file_filter("${HEADER_FILES}" "include" "Header Files")
 	vs_file_filter("${SOURCE_FILES}" "src" "Source Files")
-	vs_file_filter_unremoved("${BACKEND_SOURCE_FILES}" "backend" "Source Files")
-	vs_file_filter_unremoved("${BACKEND_HEADER_FILES}" "backend" "Header Files")
+	vs_file_filter_unremoved("${BACKEND_SOURCE_FILES}" "Backend" "Source Files")
+	vs_file_filter_unremoved("${BACKEND_HEADER_FILES}" "Backend" "Header Files")
 
-	list(APPEND SOURCE_FILES ${BACKEND_SOURCE_FILES})
-	list(APPEND HEADER_FILES ${BACKEND_HEADER_FILES})
+	vs_file_filter_unremoved("${PRIVATE_SOURCE_FILES}" "Private" "Source Files")
+	vs_file_filter_unremoved("${PRIVATE_HEADER_FILES}" "Private" "Header Files")
 endif(MSVC)
 
+list(APPEND SOURCE_FILES ${BACKEND_SOURCE_FILES})
+list(APPEND HEADER_FILES ${BACKEND_HEADER_FILES})
+list(APPEND SOURCE_FILES ${PRIVATE_SOURCE_FILES})
+list(APPEND HEADER_FILES ${PRIVATE_HEADER_FILES})
+
 include_directories(
-	"include"
-	"${CMAKE_CURRENT_SOURCE_DIR}"
+	${PROJECT_INCLUDE_DIRECTORIES}
 	# "${CMAKE_SOURCE_DIR}/thirdparty/tgfx/include"
-	"${CMAKE_SOURCE_DIR}/thirdparty/blend2d/include"
 )
 
 # message("CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}/thirdparty/blend2d/include")
@@ -76,8 +98,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES} ${HEADER_FILES})
 target_link_directories(${PROJECT_NAME} PRIVATE
 	# debug "${CMAKE_SOURCE_DIR}/thirdparty/tgfx/lib/Debug"
 	# optimized "${CMAKE_SOURCE_DIR}/thirdparty/tgfx/lib/Release"
-	debug "${CMAKE_SOURCE_DIR}/thirdparty/blend2d/lib/Debug"
-	optimized "${CMAKE_SOURCE_DIR}/thirdparty/blend2d/lib/Release"
+	${PROJECT_LINK_DIRECTORIES}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

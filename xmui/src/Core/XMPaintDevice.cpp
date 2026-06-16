@@ -8,7 +8,7 @@
 #elif defined XMUI_USE_BLEND2D_BACKEND
 #include "backend/blend2d/XMBlend2d.h"
 #elif defined XMUI_USE_DIRECT2D_BACKEND
-#include "backend/direct2d/XMDirect2D.h"
+#include "backend/XMDirect2D.h"
 #endif
 
 XMPainter* XMPaintDevice::s_current = nullptr;

@@ -1,5 +1,5 @@
 #include "Core/XMPen.h"
-#include "backend/direct2d/XMDirect2D.h"
+#include "backend/XMDirect2D.h"
 
 XMPen::XMPen()
 	: m_width(1.0f)
